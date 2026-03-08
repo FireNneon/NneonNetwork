@@ -19,3 +19,4 @@ sudo apt install crowdsec -y
 # Harden SSH
 sudo cp ./sshd_config /etc/ssh/sshd_config
 sudo systemctl restart sshd
+sudo systemctl restart ssh
