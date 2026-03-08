@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#Ask for password for sudo
+sudo -v
+
 # Update the VM Ubuntu and install qemu-guest-agent & tailscale, ETC. 
 sudo apt update && apt upgrade -y
 
@@ -7,6 +10,7 @@ sudo apt install qemu-guest-agent -y
 #----------------------------------------------------
 curl -fsSL https://tailscale.com/install.sh | sudo sh
 sudo systemctl enable --now tailscaled
+sleep 2
 sudo tailscale set --operator=$USER
 #----------------------------------------------------
 curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.deb.sh | sudo bash
