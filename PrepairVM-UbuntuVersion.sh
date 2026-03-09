@@ -5,6 +5,9 @@ sudo -v
 
 # Update the VM Ubuntu and install qemu-guest-agent & tailscale, ETC. 
 sudo apt update && apt upgrade -y
+# Expand LVM to use full disk
+sudo lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv
+sudo resize2fs /dev/ubuntu-vg/ubuntu-lv
 
 sudo apt install qemu-guest-agent -y 
 #----------------------------------------------------
