@@ -18,8 +18,10 @@ sudo tailscale set --operator=$USER
 #----------------------------------------------------
 curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.deb.sh | sudo bash
 sudo apt install crowdsec -y
+sleep 2
+sudo systemctl enable --now crowdsec
 
 # Harden SSH
 sudo cp ./sshd_config /etc/ssh/sshd_config
-sudo systemctl restart sshd ssh ssh.socket
-
+sudo systemctl daemon-reload
+sudo systemctl restart ssh
