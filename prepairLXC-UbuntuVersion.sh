@@ -3,7 +3,7 @@
 #Ask for password for sudo
 sudo -v
 
-# Update the VM Ubuntu and install qemu-guest-agent & tailscale, ETC. 
+# Update the VM Ubuntu and install tailscale and what not. 
 sudo apt update && sudo apt upgrade -y
 #----------------------------------------------------
 curl -fsSL https://tailscale.com/install.sh | sudo sh
