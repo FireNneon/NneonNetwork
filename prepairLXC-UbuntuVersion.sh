@@ -5,6 +5,7 @@ sudo -v
 
 # Update the VM Ubuntu and install tailscale and what not. 
 sudo apt update && sudo apt upgrade -y
+sudo apt install curl git -y
 #----------------------------------------------------
 curl -fsSL https://tailscale.com/install.sh | sudo sh
 sudo systemctl enable --now tailscaled
