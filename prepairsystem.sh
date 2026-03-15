@@ -3,6 +3,7 @@
 #get sudo creds and fail if not given or incorrect. 
 sudo -v || { echo "sudo authentication failed, exiting."; exit 1; } 
 
+#ask some questions. System specfics, want docker, etc. 
 echo "which Version do you want to use?"
 echo " 1) VM"
 echo " 2) LXC"
@@ -35,8 +36,7 @@ sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin dock
 
 sleep 2
 sudo systemctl enable --now docker
-sudo mkdir /opt/docker/
-sudo cd /opt/docker/
+sudo mkdir -p /opt/docker/
      fi
 
 # Expand LVM to use full disk
@@ -65,7 +65,6 @@ wget https://github.com/borgbackup/borg/releases/download/${BORG_VERSION}/borg-l
 sudo mv borg-linux-glibc231-x86_64 /usr/local/bin/borg
 sudo chmod +x /usr/local/bin/borg
 echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
-source ~/.bashrc
 
 # Harden SSH
 sudo cp ./sshd_config /etc/ssh/sshd_config
