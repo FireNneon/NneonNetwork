@@ -92,6 +92,7 @@ sudo systemctl enable --now crowdsec
 sudo cp ./sshd_config /etc/ssh/sshd_config
 sudo systemctl daemon-reload
 sudo systemctl restart ssh
+sudo systemctl enable --now ssh
 echo "System prepaired for LXC!! :}"
 
 else 
