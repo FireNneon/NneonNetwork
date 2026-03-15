@@ -34,7 +34,9 @@ sudo apt update
 sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y 
 
 sleep 2
-sudo systemctl enable --now docker     
+sudo systemctl enable --now docker
+sudo mkdir /opt/docker/
+sudo cd /opt/docker/
      fi
 
 # Expand LVM to use full disk
