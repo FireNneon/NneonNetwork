@@ -10,6 +10,7 @@ echo " 2) LXC"
 echo "" 
 read -p "Enter choice [1-2]: " choice
 
+sleep 3
 
 if [[ "$choice" == "1" ]]; then 
      read -p "Do you want to install docker in this VM? (yes or no): " answer
