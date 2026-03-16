@@ -59,12 +59,12 @@ sudo apt install crowdsec -y
 sleep 2
 sudo systemctl enable --now crowdsec
 #----------------------------------------------------
-sudo apt remove borgbackup -y
-BORG_VERSION=$(curl -s https://api.github.com/repos/borgbackup/borg/releases/latest | grep '"tag_name"' | cut -d'"' -f4)
-wget https://github.com/borgbackup/borg/releases/download/${BORG_VERSION}/borg-linux-glibc231-x86_64
-sudo mv borg-linux-glibc231-x86_64 /usr/local/bin/borg
-sudo chmod +x /usr/local/bin/borg
-echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
+#sudo apt remove borgbackup -y
+#BORG_VERSION=$(curl -s https://api.github.com/repos/borgbackup/borg/releases/latest | grep '"tag_name"' | cut -d'"' -f4)
+#wget https://github.com/borgbackup/borg/releases/download/${BORG_VERSION}/borg-linux-glibc231-x86_64
+#sudo mv borg-linux-glibc231-x86_64 /usr/local/bin/borg
+#sudo chmod +x /usr/local/bin/borg
+#echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
 
 # Harden SSH
 sudo cp ./sshd_config /etc/ssh/sshd_config
