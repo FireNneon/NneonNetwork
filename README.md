@@ -7,7 +7,7 @@
 **Prep:**
 What you need before hand, is your API Token to be used as the password to this private repo. 
 Api token location:
-profile-icon -) settings -) developer settings -) Classic token
+profile-icon -} settings -} developer settings -} Classic token
 minimum  required permissions aka scope are repo. 
 
 **Steps to Pull repo:**
