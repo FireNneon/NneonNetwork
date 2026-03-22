@@ -1,7 +1,10 @@
 #-------------------------------------------------------------------NneonNetwork----------------------------------------------------------------------------------------------
 
 Personal REPO for my homelab,  Which includes the Following sshd_config for some default ssh hardening, and my bootstrap script which is multi-choice, made specfically for my homelab that runs proxmox. 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------# **Prep:**
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------# 
+
+
+**Prep:**
 What you need before hand, is your API Token to be used as the password to this private repo. 
 Api token location:
 profile-icon -) settings -) developer settings -) Classic token
