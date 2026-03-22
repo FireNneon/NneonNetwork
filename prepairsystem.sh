@@ -2,6 +2,18 @@
 #get sudo creds and fail if not given or incorrect. 
 sudo -v || { echo "sudo authentication failed, exiting."; exit 1; } 
 
+first_steps() {
+	sudo apt update && sudo apt upgrade -y
+	sudo apt install curl -y
+}
+
+disable_swap() {
+	# Disable swap
+	sudo swapoff -a
+	sudo rm -f /swap.img
+	sudo sed -i '/swap/s/^/#/' /etc/fstab
+}
+
 debloat_ubuntu() {
 	# Stop multipathd and its socket first
 	sudo systemctl stop multipathd multipathd.socket
@@ -12,12 +24,8 @@ debloat_ubuntu() {
 	# Remove unnecessary packages
 	sudo apt remove -y modemmanager
 	sudo apt autoremove -y
-
-	# Disable swap
-	sudo swapoff -a
-	sudo rm -f /swap.img
-	sudo sed -i '/swap/s/^/#/' /etc/fstab
 }
+
 harden_ssh() {
 	#Harden SSH
 	sudo cp ./sshd_config /etc/ssh/sshd_config
@@ -28,8 +36,7 @@ harden_ssh() {
 
 install_docker() {
 	# Add Docker's official GPG key:
-    sudo apt update && sudo apt upgrade -y
-    sudo apt install ca-certificates curl
+    sudo apt install ca-certificates
     sudo install -m 0755 -d /etc/apt/keyrings
     sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
     sudo chmod a+r /etc/apt/keyrings/docker.asc
@@ -50,6 +57,7 @@ install_docker() {
     sudo systemctl enable --now docker
     sudo mkdir -p /opt/docker/
 }
+
 install_crowdsec() {
  	#----------------------------------------------------
  	curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.deb.sh | sudo bash
@@ -58,6 +66,7 @@ install_crowdsec() {
  	sudo systemctl enable --now crowdsec
  	#----------------------------------------------------
 }
+
 install_tailscale() {
 	#----------------------------------------------------
 	curl -fsSL https://tailscale.com/install.sh | sudo sh
@@ -85,86 +94,126 @@ install_defaults() {
 	harden_ssh
 }
 
-#Asking what Version of the boottrap you want to use.  
-echo "which Version do you want to use?"
-echo " 1) VM" #This choice will Install the defaults, harden ssh, and will proceed to ask if you want some to install some extra things, docker, borgbackups, etc. 
-#echo " 	2) Stripped VM (Just tailscale and Hardened SSH)" # This choice will debloat ubuntu, install tailscale, and harden SSH. (removed for now)
-echo " 2) LXC" # This choice will installl the defaults and harden ssh, but doesn't expand the disk to be full or install qemu-guest-agent.
-echo "" 
-read -rp "Enter choice [1-2] (type anything to cancel whole script): " choice
+VM_Specfics () {
+	# Expand LVM to use full disk
+	sudo lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv
 
-sleep 3
+	sudo resize2fs /dev/ubuntu-vg/ubuntu-lv
 
-case "$choice" in
-	#VM
-	1) 
-		#asking if you want to install some extra bits. 
-		echo "Extras: What do you want to install with the defaults?"
-		echo " 1) Just Docker." #install just docker with the defaults
-		echo " 2) Just borgbackups. " #install just borgBackups
-		echo " 3) ALL)" #install all options listed. 
-		echo " 4) no extras" #no extra bits just the defaults will be installed. 
-		echo ""
-		read -rp "Enter Choice (1-4) (type anything to cancel whole script): " answer
-		case "$answer" in 
+	#install qemu-guest-agent, tailscale, etc. 
 
-			1)
-				install_docker
-				;;
-			2) 
-				sudo apt update && sudo apt upgrade -y
-				install_borg
-				;;
-			3)
-				install_docker
-				sleep 2
-				install_borg
-				;;
-			4)
-				echo "No extras selected."
-				sleep 2
-				sudo apt update && sudo apt upgrade -y
-				;;
-			*)
-				echo "Canceling script..."
-				exit 1
-				;;
+	sudo apt install qemu-guest-agent -y 
+}
+#--------------------------------------------------
+#DEV Saved commands
+
+#--------------------------------------------------
+
+echo "What do you want todo with this system?"
+echo " 1) Only Debloat system"
+echo " 2) Prepare system?"
+echo ""
+read -rp "Enter choice [1-2] (type anything to cancel whole script): " doingtype
+sleep 4
+read -rp "What type of system is this, LXC or VM?: " systemtype
+sleep 2
+
+case "$doingtype" in 
+
+	1)
+		if [[ "$systemtype" == "VM" ]]; then
+			debloat_ubuntu
+			disable_swap
+		elif [[ "$systemtype" == "LXC" ]]; then
+			debloat_ubuntu
+		else
+			clear
+			echo "Canceling whole script..."
+			exit 1
+		fi
+		;;
+
+	2)
+		case "$systemtype" in
+		#VM
+		1) 
+			read -rp "Do you want this VM stripped? (Yes|yes|Y|y or No|no|N|n)" stripped #doesn't install docker, borg, crowdsec, and removes bloatware
+			case "$stripped" in
+			Yes|yes|Y|y)
+							VM_Specfics
+							debloat_ubuntu
+							disable_swap
+							install_tailscale
+							;;
+			No|no|N|n)
+				
+						#asking if you want to install some extra bits. 
+						echo "Extras: What do you want to install with the defaults?"
+						echo " 1) Just Docker." #install just docker with the defaults
+						echo " 2) Just borgbackups. " #install just borgBackups
+						echo " 3) ALL)" #install all options listed. 
+						echo " 4) no extras" #no extra bits just the defaults will be installed. 
+						echo ""
+						read -rp "Enter Choice (1-5) (type anything to cancel whole script): " extras
+					case "$extras" in 
+
+					1)
+						first_steps
+						install_docker
+						;;
+					2) 
+						first_steps
+						install_borg
+						;;
+					3)
+						first_steps
+						install_docker
+						sleep 3
+						install_borg
+						;;
+					4)
+						echo "No extras selected."
+						sleep 3
+						first_steps
+						;;
+					*)
+						clear
+						echo "Canceling whole script..."
+						exit 1
+						;;
+					esac
+					sleep 2
+					VM_Specfics
+					sleep 2
+					install_defaults
+					disable_swap
+					clear
+					echo "System prepaired for VM!! :}"
+					sleep 4
+					;;
+			esac
+			;;
+    	#LXC
+		2) 
+			# Update the VM Ubuntu and install tailscale, Crowdsec, and remove bloatware. 
+			first_steps
+			#----------------------------------------------------
+			install_defaults
+			clear
+			echo "System prepaired for LXC!! :}"
+			sleep 4
+			;;
+    	*)
+			clear
+			echo "Canceling whole script..."
+			sleep 3
+			exit 1
+			;;
 		esac
-		# Expand LVM to use full disk
-		sudo lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv
-
-		sudo resize2fs /dev/ubuntu-vg/ubuntu-lv
-
-		# Update the Ubuntu VM and install qemu-guest-agent, tailscale, etc. 
-		sudo apt install curl -y
-
-		sudo apt install qemu-guest-agent -y 
-		
-		sleep 2
-		install_defaults
-		clear
-		echo "System prepaired for VM!! :}"
-		sleep 4
 		;;
-		
-		#Stripped VM (removed for now)
-		#2)
-        
-		#	;;
-    #LXC
-	2) 
-		# Update the VM Ubuntu and install tailscale, Crowdsec, and remove bloatware. 
-		sudo apt update && sudo apt upgrade -y
-		sudo apt install curl -y
-		#----------------------------------------------------
-		install_defaults
+	*)
 		clear
-		echo "System prepaired for LXC!! :}"
-		sleep 4
-		;;
-    *)
-		echo "Canceling script..."
-		sleep 3
+		echo "Canceling whole script..."
 		exit 1
 		;;
 esac
