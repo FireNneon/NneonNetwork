@@ -11,19 +11,19 @@ profile-icon -) settings -) developer settings -) Classic token
 minimum  required permissions aka scope are repo. 
 
 **Steps to Pull repo:**
-  1. apt install git inside VM or LXC container. 
-  2. Git clone https://github.com/FireNneon/NneonNetwork
+  1. `apt install git` inside VM or LXC container. 
+  2. `Git clone https://github.com/FireNneon/NneonNetwork`
   3. Type in Username.
   4. Enter API Token (gathered from prep step)
   
 
 **Steps to run script:**
 
-  1. cd ./NneonNetwork
-  2. sudo chmod +x preparesystem.sh
-  4. type sudo password. 
-  5. ./preparesystem.sh
-  6. enter sudo password. 
+  1. `cd ./NneonNetwork`
+  2. `sudo chmod +x preparesystem.sh`
+  4. `type sudo password.` 
+  5. `./preparesystem.sh`
+  6. `enter sudo password.` 
 
 **Script Will run.** 
 
