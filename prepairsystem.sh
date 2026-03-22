@@ -94,7 +94,7 @@ install_defaults() {
 	harden_ssh
 }
 
-VM_Specfics () {
+VM_Specifics() {
 	# Expand LVM to use full disk
 	sudo lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv
 
@@ -128,7 +128,7 @@ case "$doingtype" in
 			debloat_ubuntu
 		else
 			clear
-			echo "Canceling whole script..."
+			echo "Invalid input, Canceling whole script..."
 			exit 1
 		fi
 		;;
@@ -136,14 +136,15 @@ case "$doingtype" in
 	2)
 		case "$systemtype" in
 		#VM
-		1) 
-			read -rp "Do you want this VM stripped? (Yes|yes|Y|y or No|no|N|n)" stripped #doesn't install docker, borg, crowdsec, and removes bloatware
+		VM) 
+			read -rp "Do you want this VM stripped? (Yes|yes|Y|y or No|no|N|n) " stripped #doesn't install docker, borg, crowdsec, and removes bloatware
 			case "$stripped" in
 			Yes|yes|Y|y)
-							VM_Specfics
+							VM_Specifics
 							debloat_ubuntu
 							disable_swap
 							install_tailscale
+							harden_ssh
 							;;
 			No|no|N|n)
 				
@@ -178,12 +179,12 @@ case "$doingtype" in
 						;;
 					*)
 						clear
-						echo "Canceling whole script..."
+						echo "Invalid input, Canceling whole script..."
 						exit 1
 						;;
 					esac
 					sleep 2
-					VM_Specfics
+					VM_Specifics
 					sleep 2
 					install_defaults
 					disable_swap
@@ -191,10 +192,16 @@ case "$doingtype" in
 					echo "System prepaired for VM!! :}"
 					sleep 4
 					;;
+			*)
+				clear
+				echo "Invalid input, Canceling whole script..."
+				exit 1
+				;;
+
 			esac
 			;;
     	#LXC
-		2) 
+		LXC) 
 			# Update the VM Ubuntu and install tailscale, Crowdsec, and remove bloatware. 
 			first_steps
 			#----------------------------------------------------
@@ -205,7 +212,7 @@ case "$doingtype" in
 			;;
     	*)
 			clear
-			echo "Canceling whole script..."
+			echo "Invalid input, Canceling whole script..."
 			sleep 3
 			exit 1
 			;;
@@ -213,7 +220,7 @@ case "$doingtype" in
 		;;
 	*)
 		clear
-		echo "Canceling whole script..."
+		echo "Invalid input, Canceling whole script..."
 		exit 1
 		;;
 esac
