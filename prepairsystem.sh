@@ -36,7 +36,7 @@ harden_ssh() {
 
 install_docker() {
 	# Add Docker's official GPG key:
-    sudo apt install ca-certificates
+    sudo apt install ca-certificates -y
     sudo install -m 0755 -d /etc/apt/keyrings
     sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
     sudo chmod a+r /etc/apt/keyrings/docker.asc
@@ -77,14 +77,13 @@ install_tailscale() {
 }
 
 install_borg() {
-	#----------------------------------------------------
-	sudo apt remove borgbackup -y 2>/dev/null
-	BORG_VERSION=$(curl -s https://api.github.com/repos/borgbackup/borg/releases/latest | grep '"tag_name"' | cut -d'"' -f4)
-	wget https://github.com/borgbackup/borg/releases/download/"${BORG_VERSION}"/borg-linux-glibc231-x86_64
-	sudo mv borg-linux-glibc231-x86_64 /usr/local/bin/borg
-	sudo chmod +x /usr/local/bin/borg
-	echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
-	#----------------------------------------------------
+    sudo apt remove borgbackup -y 2>/dev/null
+    BORG_VERSION=$(curl -s https://api.github.com/repos/borgbackup/borg/releases/latest | grep '"tag_name"' | cut -d'"' -f4)
+    BORG_FILE=$(curl -s https://api.github.com/repos/borgbackup/borg/releases/latest | grep "browser_download_url" | grep "linux" | grep "x86_64-gh\"" | grep -v "tgz" | head -1 | cut -d'"' -f4 | xargs basename)
+    wget https://github.com/borgbackup/borg/releases/download/${BORG_VERSION}/${BORG_FILE}
+    sudo mv ${BORG_FILE} /usr/local/bin/borg
+    sudo chmod +x /usr/local/bin/borg
+    echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
 }
 
 install_defaults() {
@@ -114,7 +113,7 @@ echo " 1) Only Debloat system"
 echo " 2) Prepare system?"
 echo ""
 read -rp "Enter choice [1-2] (type anything to cancel whole script): " doingtype
-sleep 4
+sleep 2
 read -rp "What type of system is this, LXC or VM?: " systemtype
 sleep 2
 
