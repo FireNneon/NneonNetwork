@@ -156,7 +156,7 @@ case "$doingtype" in
 						echo " 3) ALL)" #install all options listed. 
 						echo " 4) no extras" #no extra bits just the defaults will be installed. 
 						echo ""
-						read -rp "Enter Choice (1-5) (type anything to cancel whole script): " extras
+						read -rp "Enter Choice (1-4) (type anything to cancel whole script): " extras
 					case "$extras" in 
 
 					1)
