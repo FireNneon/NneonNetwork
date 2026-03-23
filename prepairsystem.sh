@@ -140,6 +140,7 @@ case "$doingtype" in
 			read -rp "Do you want this VM stripped? (Yes|yes|Y|y or No|no|N|n) " stripped #doesn't install docker, borg, crowdsec, and removes bloatware
 			case "$stripped" in
 			Yes|yes|Y|y)
+							first_steps
 							VM_Specifics
 							debloat_ubuntu
 							disable_swap
