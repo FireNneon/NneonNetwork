@@ -139,6 +139,7 @@ case "$doingtype" in
 		#VM
 		VM) 
 			read -rp "Do you want this VM stripped? (Yes|yes|Y|y or No|no|N|n) " stripped #doesn't install docker, borg, crowdsec, and removes bloatware
+			sleep 2
 			case "$stripped" in
 			Yes|yes|Y|y)
 							first_steps
@@ -158,6 +159,7 @@ case "$doingtype" in
 						echo " 4) no extras" #no extra bits just the defaults will be installed. 
 						echo ""
 						read -rp "Enter Choice (1-4) (type anything to cancel whole script): " extras
+						sleep 2
 					case "$extras" in 
 
 					1)
@@ -171,17 +173,18 @@ case "$doingtype" in
 					3)
 						first_steps
 						install_docker
-						sleep 3
+						sleep 2
 						install_borg
 						;;
 					4)
 						echo "No extras selected."
-						sleep 3
+						sleep 2
 						first_steps
 						;;
 					*)
 						clear
 						echo "Invalid input, Canceling whole script..."
+						sleep 2
 						exit 1
 						;;
 					esac
@@ -192,8 +195,7 @@ case "$doingtype" in
 					disable_swap
 					clear
 					echo "System prepaired for VM!! :}"
-					sleep 4
-					;;
+					sleep 3
 			*)
 				clear
 				echo "Invalid input, Canceling whole script..."
@@ -210,12 +212,12 @@ case "$doingtype" in
 			install_defaults
 			clear
 			echo "System prepaired for LXC!! :}"
-			sleep 4
+			sleep 3
 			;;
     	*)
 			clear
 			echo "Invalid input, Canceling whole script..."
-			sleep 3
+			sleep 2
 			exit 1
 			;;
 		esac
@@ -223,6 +225,7 @@ case "$doingtype" in
 	*)
 		clear
 		echo "Invalid input, Canceling whole script..."
+		sleep 2
 		exit 1
 		;;
 esac
