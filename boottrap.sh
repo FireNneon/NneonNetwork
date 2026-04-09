@@ -160,6 +160,7 @@ case "$doingtype" in
 						echo ""
 						read -rp "Enter Choice (1-4) (type anything to cancel whole script): " extras
 						sleep 2
+						
 					case "$extras" in 
 
 					1)
@@ -196,6 +197,7 @@ case "$doingtype" in
 					clear
 					echo "System prepaired for VM!! :}"
 					sleep 3
+					;;
 			*)
 				clear
 				echo "Invalid input, Canceling whole script..."
