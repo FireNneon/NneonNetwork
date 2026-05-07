@@ -1,4 +1,4 @@
-# ------------------------------ NneonNetwork ------------------------------------
+#                        - NneonNetwork -
 
 > Personal REPO for my homelab,  Which includes the Following. a sshd_config for some default ssh hardening, and my bootstrap script which is multi-choice, which is made specfically for my homelab that runs proxmox. 
 
