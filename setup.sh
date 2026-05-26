@@ -101,6 +101,9 @@ VM_Specifics() {
 
 	sudo resize2fs /dev/ubuntu-vg/ubuntu-lv
 
+	sudo lvextend -l +100%FREE /dev/rl_borgbackupserver/root
+	sudo xfs_growfs /
+
 	#install qemu-guest-agent, tailscale, etc. 
 
 	sudo apt install qemu-guest-agent -y 
