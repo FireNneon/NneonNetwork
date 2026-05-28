@@ -13,7 +13,8 @@
 
 services:
   bbs:
-    image: marcpope/borgbackupserver:latest
+    # In my setup I don't use latest tag in the image. I like to be able to control the version I use so everything is predictable. -Nneon
+    image: marcpope/borgbackupserver:${VERSION}
     # build: .    # uncomment to build locally instead of pulling from Docker Hub
     container_name: bbs
     ports:
@@ -37,21 +38,18 @@ services:
       # Admin password — only used on first run. Omit to auto-generate (shown in logs).
       - ADMIN_PASS=${ADMIN_PASS}
 
-    security_opt: # added for extra hardening. - Nneon
-      - no-new-privileges:true
-    cap_drop: # added for extra hardening, but cap_drop can break things, so if we fix this by adding cap_add with the permission it needs, found by troubleshooting. - Nneon
+    cap_drop: # added for extra hardening, but cap_drop can break things, so we fix this by adding cap_add with the permissions it needs, Which is found by troubleshooting. - Nneon
       - all
-    cap_add: # added this to fix it not booting. - Nneon
-    - FOWNER
-    - CHOWN
-    - SETUID
-    - SETGID
-    - DAC_OVERRIDE
+    cap_add: # added this to fix it stuff. - Nneon
+    - FOWNER # needed for boot - Nneon
+    - CHOWN # needed for boot - Nneon
+    - SETUID # needed for boot - Nneon
+    - SETGID # needed for boot - Nneon
+    - DAC_OVERRIDE # needed for boot - Nneon
+    - AUDIT_WRITE # needed for Client Repo creation via GUI - Nneon
     volumes:
-      #- bbs-data:/var/bbs
-      # To store backups on a specific disk or path instead of Docker's internal storage,
-      # replace the line above with a bind mount:
-      - /mnt/borg-backups:/var/bbs
+      - /opt/docker/borgserver:/var/bbs
+      - /mnt/borg-backups:/var/bbs/home
     restart: unless-stopped
     # Docker's default json-file log driver has no size limit, which means
     # container output (mostly ClickHouse's internal warnings) will grow
