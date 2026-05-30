@@ -48,6 +48,4 @@ minimum  required permissions aka scope are repo.
 This path follows the VM path closely, but doesn't expand the disk, LXC containers don't need that step, and it will also not install qemu-guest-agent. 
 
 so it apt update & apt upgrade, Install Tailscale, Crowdsec and Harden SSH with the provided sshd_config.
-
-test
  

@@ -7,13 +7,6 @@ first_steps() {
 	sudo apt install curl -y
 }
 
-disable_swap() {
-	# Disable swap
-	sudo swapoff -a
-	sudo rm -f /swap.img
-	sudo sed -i '/swap/s/^/#/' /etc/fstab
-}
-
 debloat_ubuntu() {
 	# Stop multipathd and its socket first
 	sudo systemctl stop multipathd multipathd.socket
@@ -26,16 +19,9 @@ debloat_ubuntu() {
 	sudo apt autoremove -y
 }
 
-harden_ssh() {
-	#Harden SSH
-	sudo cp ./sshd_config /etc/ssh/sshd_config
-	sudo systemctl daemon-reload
-	sudo systemctl restart ssh
-	sudo systemctl enable --now ssh
-}
 
 install_docker() {
-	sudo apt remove $(dpkg --get-selections docker.io docker-compose docker-compose-v2 docker-doc podman-docker containerd runc | cut -f1)
+	sudo apt remove "$(dpkg --get-selections docker.io docker-compose docker-compose-v2 docker-doc podman-docker containerd runc | cut -f1)"
 	
 	# Add Docker's official GPG key:
     sudo apt install ca-certificates curl -y
@@ -58,34 +44,6 @@ install_docker() {
 	sleep 2
     sudo systemctl enable --now docker
     sudo mkdir -p /opt/docker/
-}
-
-install_crowdsec() {
- 	#----------------------------------------------------
- 	curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.deb.sh | sudo bash
- 	sudo apt install crowdsec -y
- 	sleep 2
- 	sudo systemctl enable --now crowdsec
- 	#----------------------------------------------------
-}
-
-install_tailscale() {
-	#----------------------------------------------------
-	curl -fsSL https://tailscale.com/install.sh | sudo sh
-	sudo systemctl enable --now tailscaled
-	sleep 2
-	sudo tailscale set --operator="$USER"
-	#----------------------------------------------------
-}
-
-install_borg() {
-    sudo apt remove borgbackup -y 2>/dev/null
-    BORG_VERSION=$(curl -s https://api.github.com/repos/borgbackup/borg/releases/latest | grep '"tag_name"' | cut -d'"' -f4)
-    BORG_FILE=$(curl -s https://api.github.com/repos/borgbackup/borg/releases/latest | grep "browser_download_url" | grep "linux" | grep "x86_64-gh\"" | grep -v "tgz" | head -1 | cut -d'"' -f4 | xargs basename)
-    wget https://github.com/borgbackup/borg/releases/download/${BORG_VERSION}/${BORG_FILE}
-    sudo mv ${BORG_FILE} /usr/local/bin/borg
-    sudo chmod +x /usr/local/bin/borg
-    echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
 }
 
 install_defaults() {
