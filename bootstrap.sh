@@ -16,14 +16,11 @@ clear
 echo "..."
 sleep 2.3
 clear
-echo ""
 echo "------------NneonNetwork-----------------"
 echo "Welcome. One moment, detecting System...."
 echo "-----------------------------------------"
-echo ""
 sleep 2.3
 echo ""
 echo "------NneonNetwork--------"
 echo "Detected System is $distro"
 echo "--------------------------"
-echo ""
