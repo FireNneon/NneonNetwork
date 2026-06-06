@@ -11,24 +11,12 @@ harden_ssh() {
 }
 first_steps() {
 	if [ "$distro" = rocky ]; then 
-		sudo dnf update -y
-		sudo dnf install curl git -y 
+		sudo "$pk" update -y
 	elif [ "$distro" = ubuntu ]; then
-		sudo apt update && sudo apt upgrade -y
-		sudo apt install curl -y
+		sudo "$pk" update && sudo apt upgrade -y
 	fi
-
-	if [ "$distro" = rocky ]; then 
-		sudo apt install qemu-guest-agent -y 
-	elif [ "$distro" = ubuntu ]; then
-		sudo dnf install qemu-guest-agent -y
-	fi
-	if [ "$distro" = rocky ]; then 
-		sudo apt install curl -y
-	elif [ "$distro" = ubuntu ]; then
-		sudo dnf install curl
-	fi
-
+	sudo "$pk" install curl git -y
+	sudo "$pk" install qemu-guest-agent -y 
 }
 
 install_crowdsec() {

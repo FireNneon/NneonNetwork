@@ -25,6 +25,7 @@ case "$ID" in
         pk="apt"
         ;;
     *)
+        echo "Something Went Wrong with the packagemanager detection script... Canceling.."
         exit 1
         ;;
 esac
