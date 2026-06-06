@@ -4,9 +4,13 @@ source ./common.sh
 sudo -v || { echo "sudo authentication failed, exiting."; exit 1; }
 
 echo "Starting Bootstrap.sh...."
-sleep 3
+sleep 2.5
+echo "..."
+sleep 2.5
+echo "...."
+sleep 2.5
 echo "Welcome...."
-sleep 3 
+sleep 2.5 
 echo "One moment, detecting System...."
-sleep 2
+sleep 2.5
 echo "Detected System is $distro"
