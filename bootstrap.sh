@@ -8,12 +8,14 @@ echo "--------------------------"
 sleep 2.3
 clear
 echo "."
+sleep 2.2
 clear
 echo ".."
+sleep 2.2
 clear
 echo "..."
 sleep 2.3
-Clear
+clear
 echo ""
 echo "------------NneonNetwork-----------------"
 echo "Welcome. One moment, detecting System...."
