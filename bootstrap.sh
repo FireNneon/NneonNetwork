@@ -2,15 +2,22 @@
 source ./common.sh
 
 sudo -v || { echo "sudo authentication failed, exiting."; exit 1; }
-
+echo "--------------------------"
 echo "Starting Bootstrap.sh...."
-sleep 2.5
+echo "--------------------------"
+sleep 2.3
+echo "-----"
 echo "..."
-sleep 2.5
+echo "-----"
+sleep 2.3
+echo "-----"
 echo "...."
-sleep 2.5
-echo "Welcome...."
-sleep 2.5 
-echo "One moment, detecting System...."
-sleep 2.5
+echo "-----"
+sleep 2.3
+echo "-----------------------------------------"
+echo "Welcome. One moment, detecting System...."
+echo "-----------------------------------------"
+sleep 2.3
+echo "--------------------------"
 echo "Detected System is $distro"
+echo "--------------------------"
