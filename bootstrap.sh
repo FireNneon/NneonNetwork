@@ -15,11 +15,8 @@ echo ""
 echo "Detecting System...."
 echo "-----------------------------------------"
 sleep 2.3
-echo ""
 echo "------------NneonNetwork-----------------"
 echo "Nix: The System I've detected is $distro"
-echo ""
-echo "-----------------------------------------"
 read -rp "Nix: Is this correct? (Yes or No?): " correctdistro
 echo ""
 echo "------------NneonNetwork-----------------"
