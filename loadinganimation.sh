@@ -1,7 +1,7 @@
 #!/bin/bash
 
 LoadingAnimation() {
-	sleep 2.2
+	sleep 1.4
     clear
     sleep 2.0
     echo "------NneonNetwork--------"
