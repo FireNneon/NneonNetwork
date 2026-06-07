@@ -14,9 +14,10 @@ sleep 2.4
 clear
 echo "------------NneonNetwork-----------------"
 echo "Nix: The System I've detected is $distro"
-read -rp "Nix: Is this correct? (Yes or No?): " correctdistro
 echo ""
-echo "------------NneonNetwork-----------------"
+echo "-----------------------------------------"
+read -rp "Nix: Is this correct? (Yes or No?): " correctdistro
+
 case "$correctdistro" in
     Yes|yes|Y|y)
         echo "-----------------------------------------"
