@@ -6,45 +6,58 @@ LoadingAnimation() {
 	echo ""
     echo "------------NneonNetwork-----------------"
 	echo "."
+    echo "-----------------------------------------"
 	sleep 1.1
 	clear
 	echo ""
     echo "------------NneonNetwork-----------------"
 	echo ".."
+    echo "-----------------------------------------"
 	sleep 1.1
 	clear
 	echo ""
     echo "------------NneonNetwork-----------------"
 	echo "..."
+    echo "-----------------------------------------"
 	sleep 1.1
 	clear
 	echo ""
     echo "------------NneonNetwork-----------------"
 	echo "...L"
+    echo "-----------------------------------------"
 	sleep 1.1
 	clear
 	echo ""
     echo "------------NneonNetwork-----------------"
 	echo "...Lo"
+    echo "-----------------------------------------"
 	sleep 1.1
 	clear
 	echo ""
     echo "------------NneonNetwork-----------------"
 	echo "...Loa"
+    echo "-----------------------------------------"
 	sleep 1.1
 	clear
 	echo ""
     echo "------------NneonNetwork-----------------"
 	echo "...Load"
+    echo "-----------------------------------------"
 	sleep 1.1
 	clear
 	echo ""
     echo "------------NneonNetwork-----------------"
 	echo "...Loade"
+    echo "-----------------------------------------"
 	sleep 1.1
 	clear
 	echo ""
+    echo "------------NneonNetwork-----------------"
 	echo "...Loaded"
-	sleep 1.0
+    echo "-----------------------------------------"
+    echo ""
+    echo "   .     ."
+    echo " {_________}"
+    sleep 1.1
 	clear
 }
