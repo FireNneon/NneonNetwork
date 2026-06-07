@@ -17,23 +17,31 @@ sleep 2.3
 echo ""
 echo "------------NneonNetwork-----------------"
 echo "Nix: The System I've detected is $distro"
+echo ""
 echo "-----------------------------------------"
 read -rp "Nix: Is this correct? (Yes or No?): " correctdistro
 echo ""
 echo "------------NneonNetwork-----------------"
 case "$correctdistro" in
     Yes|yes|Y|y)
+        echo "-----------------------------------------"
         echo "Thank you for confirming that it was correct, I'll now proceed with setting up this system..."
+        echo ""
         sleep 2.3
         ;;
     No|no|N|n)
+        clear
         echo "1) Manual override"
         echo "2) Detection was Correct After All"
         echo "3) Cancel"
+        echo "-----------------------------------------"
         read -rp "Nix: You have told me that the distro detected was wrong. Sorry to Hear this. Please Select an option to proceed..(1-3): " distrochoice 
+        echo ""
         echo "------------NneonNetwork-----------------"
         case "$distrochoice" in
             1)
+                clear
+                echo "------------NneonNetwork-----------------"
                 echo "Nix: Manual Override Has been Selected..."
                 sleep 2.2
                 echo ""
@@ -45,11 +53,15 @@ case "$correctdistro" in
                 case "$correct" in
                 
                     Yes|yes|Y|y)
+                        clear
+                        echo "------------NneonNetwork-----------------"
                         echo "Nix: Thanks for confirming that I understood what you typed was correct. Now proceeding with setup..."
                         sleep 2.3
                         break
                         ;;
                     No|no|N|n)
+                        clear
+                        echo "------------NneonNetwork-----------------"
                         read -rp "Nix: Please Retype what distro you are using? Sorry that got it wrong.: " manual
                         distro="$manual"
                         ;;
