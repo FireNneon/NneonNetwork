@@ -6,7 +6,7 @@ LoadingAnimation
 echo ""
 echo "------------NneonNetwork-----------------"
 echo "Unknown: Welcome. My name is Nix, I'm so happy to meet you. One moment, While I detect the system."
-sleep 2.3
+sleep 2.5
 echo ""
 echo "Detecting System...."
 echo ""
