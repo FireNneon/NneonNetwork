@@ -3,6 +3,7 @@
 LoadingAnimation() {
 	sleep 1.7
     clear
+    echo ""
     sleep 1.5
     echo ""
     echo "------NneonNetwork--------"
