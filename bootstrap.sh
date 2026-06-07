@@ -4,36 +4,9 @@ source ./common.sh
 echo "------NneonNetwork--------"
 echo "Starting Bootstrap.sh...."
 echo "--------------------------"
-sleep 2.3
-clear
-echo "."
-sleep 2.2
-clear
-echo ".."
-sleep 2.2
-clear
-echo "..."
-sleep 2.2
-clear
-echo "...L"
-sleep 2.1
-clear
-echo "...Lo"
-sleep 2.1
-clear
-echo "...Loa"
-sleep 2.1
-clear
-echo "...Load"
-sleep 2.1
-clear
-echo "...Loade"
-clear
-sleep 2.1
-clear
-echo "...Loaded"
-sleep 2.0
-clear
+
+LoadingAnimation
+
 echo ""
 echo "------------NneonNetwork-----------------"
 echo "Unknown: Welcome. My name is Nix, I'm so happy to meet you. One moment, While I detect the system."
