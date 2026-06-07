@@ -4,7 +4,7 @@ source ./common.sh
 echo "------NneonNetwork--------"
 echo "Starting Bootstrap.sh...."
 echo "--------------------------"
-
+Sleep 2.4
 LoadingAnimation
 
 echo ""
@@ -14,7 +14,7 @@ sleep 2.3
 echo ""
 echo "Detecting System...."
 echo ""
-sleep 2.3
+sleep 2.4
 clear
 echo "------------NneonNetwork-----------------"
 echo "Nix: The System I've detected is $distro"
