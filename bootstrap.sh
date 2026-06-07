@@ -16,7 +16,6 @@ echo "------------NneonNetwork-----------------"
 echo "Nix: The System I've detected is $distro"
 echo ""
 echo "-----------------------------------------"
-echo ""
 read -rp "Nix: Is this correct? (Yes or No?): " correctdistro
 
 case "$correctdistro" in
