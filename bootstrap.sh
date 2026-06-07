@@ -14,18 +14,25 @@ sleep 2.2
 clear
 echo "..."
 sleep 2.2
-echo "L"
+clear
+echo "...L"
 sleep 2.1
-echo "Lo"
+clear
+echo "...Lo"
 sleep 2.1
-echo "Loa"
+clear
+echo "...Loa"
 sleep 2.1
-echo "Load"
+clear
+echo "...Load"
 sleep 2.1
-echo "Loade"
+clear
+echo "...Loade"
+clear
 sleep 2.1
-echo "Loaded"
-sleep 2.3
+clear
+echo "...Loaded"
+sleep 2.0
 clear
 echo ""
 echo "------------NneonNetwork-----------------"
