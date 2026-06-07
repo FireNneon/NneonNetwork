@@ -6,9 +6,8 @@ LoadingAnimation() {
     sleep 1.5
     echo ""
     echo "------NneonNetwork--------"
-    echo "Starting Bootstrap.sh...."
+    echo " Starting Bootstrap.sh...."
     echo "--------------------------"
-    sleep 2.4
     Clear
     sleep 1.0
 	clear
