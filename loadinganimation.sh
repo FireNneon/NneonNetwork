@@ -1,7 +1,14 @@
 #!/bin/bash
 
 LoadingAnimation() {
-	echo ""
+	clear
+    echo ""
+    echo "------------NneonNetwork-----------------"
+    echo "Starting Bootstrap.sh..."
+    echo "-----------------------------------------"
+    sleep 2.0
+    clear
+    echo ""
     echo "------------NneonNetwork-----------------"
 	echo "."
     echo "-----------------------------------------"
