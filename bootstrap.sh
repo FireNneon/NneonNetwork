@@ -5,7 +5,7 @@ LoadingAnimation
 
 echo ""
 echo "------------NneonNetwork-----------------"
-echo "Unknown: Welcome. My name is Nix, I'm so happy to meet you. One moment, While I detect the system."
+echo "Welcome. My name is Nix, I'm so happy to meet you. One moment, While I detect the system."
 sleep 2.5
 echo ""
 echo "Detecting System...."
@@ -16,6 +16,7 @@ echo "------------NneonNetwork-----------------"
 echo "Nix: The System I've detected is $distro"
 echo ""
 echo "-----------------------------------------"
+echo ""
 read -rp "Nix: Is this correct? (Yes or No?): " correctdistro
 
 case "$correctdistro" in
@@ -24,6 +25,7 @@ case "$correctdistro" in
         echo "Thank you for confirming that it was correct, I'll now proceed with setting up this system..."
         echo ""
         sleep 2.3
+        clear
         ;;
     No|no|N|n)
         clear
