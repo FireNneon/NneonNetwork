@@ -1,7 +1,12 @@
 #!/bin/bash
 sudo -v || { echo "sudo authentication failed, exiting."; exit 1; }
 source ./common.sh
-
+    echo ""
+    echo "------NneonNetwork--------"
+    echo " Starting Bootstrap.sh..."
+    echo "--------------------------"
+    sleep 2.0
+    clear
 LoadingAnimation
 
 echo ""
