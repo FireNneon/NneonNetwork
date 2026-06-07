@@ -26,6 +26,7 @@ case "$correctdistro" in
         ;;
     No|no|N|n)
         clear
+        echo "------------NneonNetwork-----------------"
         echo "1) Manual override"
         echo "2) Detection was Correct After All"
         echo "3) Cancel"
