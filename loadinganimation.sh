@@ -58,6 +58,6 @@ LoadingAnimation() {
     echo ""
     echo "   .     ."
     echo " {_________}"
-    sleep 1.1
+    sleep 1.3
 	clear
 }
