@@ -1,19 +1,19 @@
 #!/bin/bash
 
 LoadingAnimation() {
-	sleep 2.3
+	sleep 2.0
 	clear
 	echo ""
 	echo "."
-	sleep 2.2
+	sleep 2.1
 	clear
 	echo ""
 	echo ".."
-	sleep 2.2
+	sleep 2.1
 	clear
 	echo ""
 	echo "..."
-	sleep 2.2
+	sleep 2.1
 	clear
 	echo ""
 	echo "...L"
