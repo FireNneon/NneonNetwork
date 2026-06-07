@@ -13,7 +13,7 @@ echo "Unknown: Welcome. My name is Nix, I'm so happy to meet you. One moment, Wh
 sleep 2.3
 echo ""
 echo "Detecting System...."
-echo "-----------------------------------------"
+echo ""
 sleep 2.3
 echo "------------NneonNetwork-----------------"
 echo "Nix: The System I've detected is $distro"
