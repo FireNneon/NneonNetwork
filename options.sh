@@ -13,6 +13,7 @@ echo "Detecting System...."
 echo ""
 sleep 2.4
 clear
+echo ""
 echo "------------NneonNetwork-----------------"
 echo "Nix: The System I've detected is $distro"
 echo ""
@@ -30,6 +31,7 @@ case "$correctdistro" in
         ;;
     No|no|N|n)
         clear
+        echo ""
         echo "------------NneonNetwork-----------------"
         echo "1) Manual override"
         echo "2) Detection was Correct After All"
@@ -42,10 +44,11 @@ case "$correctdistro" in
         case "$distrochoice" in
             1)
                 clear
+                echo ""
                 echo "------------NneonNetwork-----------------"
                 echo "Nix: Manual Override Has been Selected..."
+                echo "-----------------------------------------"
                 sleep 2.2
-                echo ""
                 read -rp "Nix: Please Tell me Which Distro You are using?: " manual
                 distro="$manual"
                 echo ""
@@ -56,6 +59,7 @@ case "$correctdistro" in
                 
                     Yes|yes|Y|y)
                         clear
+                        echo ""
                         echo "------------NneonNetwork-----------------"
                         echo "Nix: Thanks for confirming that I understood what you typed was correct. Now proceeding with setup..."
                         sleep 2.3
@@ -63,18 +67,22 @@ case "$correctdistro" in
                         ;;
                     No|no|N|n)
                         clear
+                        echo ""
                         echo "------------NneonNetwork-----------------"
                         read -rp "Nix: Please Retype what distro you are using? Sorry that got it wrong.: " manual
                         distro="$manual"
                         ;;
                 esac
                 done
-# This Asks about if the manual distro that was typed uses DNF, apt, or other. Important override.
-                sleep 2.2 
+# This Asks about if the manual distro that was typed uses DNF, apt, or other. Important override. 
+                echo ""
+                echo "------------NneonNetwork-----------------"
                 echo "1) Uses dnf"
                 echo " 2) Uses apt"
                 echo " 3) other (doesn't use either)"
+                echo "-----------------------------------------"
                 read -rp "Nix: Does $distro use dnf or apt? Please Select an Option. (1-3): " pkinfo
+                #logic for to change PackageManger
                 case "$pkinfo" in
                     1 | Rocky | rocky | Fedora | fedora | RHEL | rhel)
                         pk="dnf"
@@ -82,18 +90,27 @@ case "$correctdistro" in
                     2 | Ubuntu | ubuntu | Debian | debian)
                         pk="apt"
                         ;;
-                    *)
-                    echo "PlaceHolder Command"
+                    3)
+                    echo ""
+                    echo "------------NneonNetwork-----------------"
+                    echo "Nix: At this time I only understand Dnf and Apt. Sorry... Canceling Process.."
+                    echo "-----------------------------------------"
                     ;;
                 esac
                 ;;
             2)
-
+                echo ""
+                echo "------------NneonNetwork-----------------"
                 echo "Nix: Ah I see, mistakes happen, proceeding with $distro...."
+                echo "-----------------------------------------"
                 sleep 2.3
                 ;;
             *) 
-                echo "Nix: Canceling script..."
+                echo ""
+                echo "------------NneonNetwork-----------------"
+                echo "Nix: Canceling Process.."
+                echo "-----------------------------------------"
+                sleep 2.1
                 exit 1
                 ;;
 

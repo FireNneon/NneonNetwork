@@ -13,21 +13,29 @@ case "$ID" in
         distro="ubuntu"
         ;;
     *)
-        echo "This distro doesn't work, canceling script..."
+        echo ""
+        echo "------------NneonNetwork-----------------"
+        echo "Nix: Sadly, I don't recognize the Distro that was detected. I'm sorry... Canceling Process.."
+        echo "-----------------------------------------"
+        sleep 2.1
         exit 1
         ;;
 esac
 
 case "$ID" in
-    rocky)
+    rocky | Rocky | Fedora | fedora | RHEL | rhel)
         pk="dnf"
         ;;
-    ubuntu)
+    ubuntu | Ubuntu | Debian | debian)
         # shellcheck disable=SC2034
         pk="apt"
         ;;
     *)
-        echo "Something Went Wrong with the packagemanager detection script... Canceling.."
+        echo ""
+        echo "------------NneonNetwork-----------------"
+        echo "Nix: Sadly, I don't recognize the package manager that was detected. I'm sorry... Canceling Process.."
+        echo "-----------------------------------------"
+        sleep 2.1
         exit 1
         ;;
 esac
