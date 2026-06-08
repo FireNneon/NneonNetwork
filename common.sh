@@ -1,6 +1,4 @@
 #!/bin/bash
-source ./distro-info.sh
-source ./loadinganimation.sh
 
 harden_ssh() {
 	#Harden SSH

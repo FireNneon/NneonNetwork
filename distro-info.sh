@@ -2,6 +2,8 @@
 
 source /etc/os-release 
 
+#This script finds out the distro and packagemanager. 
+
 case "$ID" in
     rocky)
         distro="rocky"
