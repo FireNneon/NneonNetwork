@@ -129,7 +129,6 @@ options_VM_OR_LXC(){
     echo "-----------------------------------------"
     read -rp
 sleep 2.3
-    read
     
     
     
