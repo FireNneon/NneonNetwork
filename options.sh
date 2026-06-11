@@ -103,7 +103,7 @@ options_distro_specfics (){
                     echo "------------NneonNetwork-----------------"
                     echo "Nix: Ah I see, mistakes happen, proceeding with $distro...."
                     echo "-----------------------------------------"
-                    sleep 2.3
+                    sleep 2.1
                     ;;
                 *) 
                     echo ""
@@ -125,9 +125,15 @@ options_VM_OR_LXC(){
 
     echo ""
     echo "------------NneonNetwork-----------------"
-    echo "Nix: Alright now that we have finished setting up"
+    echo "Nix: Alright now that I have what Distro, Is this for a VM or LXC?"
     echo "-----------------------------------------"
-
+    read -rp
+sleep 2.3
+    read
+    
+    
+    
+    
     case "$systemtype" in
 
         true)
