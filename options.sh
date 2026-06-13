@@ -135,7 +135,7 @@ options_VM_OR_LXC(){
     echo "2) Manual Overide"
     echo "3) Cancel script"
     echo "-----------------------------------------"
-    read -rp "Nix: By default I automatically use $systemtype. Tell me, Should I use default? (1-3): "systemtypechoice
+    read -rp "Nix: By default I automatically use $systemtype. Tell me, Should I use default? (1-3): " systemtypechoice
     sleep 2.1
     case "$systemtypechoice" in
         1)
@@ -154,7 +154,7 @@ options_VM_OR_LXC(){
             echo "Nix: Manual Override Has been Selected..."
             echo "-----------------------------------------"
             sleep 2.2
-            read -rp "Nix: Please Tell me if You are using LXC or VM You are using?: "manualsystemtype
+            read -rp "Nix: Please Tell me if You are using LXC or VM You are using?: " manualsystemtype
             echo ""
             systemtype="$manualsystemtype"
             while true; do
