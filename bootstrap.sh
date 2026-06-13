@@ -4,7 +4,7 @@ source ./distro-info.sh
 source ./options.sh
 source ./common.sh
 
-options_distro_specfics
+#options_distro_specfics
 options_VM_OR_LXC
 
-echo "This message is for testing, the distro currently set is $distro and the PackageManager is $pk"
+echo "This message is for testing, the distro currently set is $distro and the PackageManager is $pk. The system type is $systemtype"

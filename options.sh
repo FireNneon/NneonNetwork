@@ -49,13 +49,13 @@ options_distro_specfics (){
                     echo "Nix: Manual Override Has been Selected..."
                     echo "-----------------------------------------"
                     sleep 2.2
-                    read -rp "Nix: Please Tell me Which Distro You are using?: " manual
-                    distro="$manual"
+                    read -rp "Nix: Please Tell me Which Distro You are using?: " manualdistro
+                    distro="$manualdistro"
                     echo ""
                     #A true loop, which asks if the manual typed distro is correct. Yes = proceeds with the new distro and ends the loop. No = asks you to type it again, and then asks again if it was typed correctly, begining the loop again. 
                     while true; do 
-                        read -rp "Nix: You have entered $distro, is this correct? (Yes | No): " correct
-                        case "$correct" in
+                        read -rp "Nix: You have entered $distro, is this correct? (Yes | No): " distrocorrect
+                        case "$distrocorrect" in
                 
                             Yes|yes|Y|y)
                             clear
@@ -69,8 +69,8 @@ options_distro_specfics (){
                             clear
                             echo ""
                             echo "------------NneonNetwork-----------------"
-                            read -rp "Nix: Please Retype what distro you are using? Sorry that got it wrong.: " manual
-                            distro="$manual"
+                            read -rp "Nix: Please Retype what distro you are using? Sorry that got it wrong.: " manualdistro
+                            distro="$manualdistro"
                             ;;
                         esac
                     done
@@ -121,30 +121,74 @@ options_distro_specfics (){
 }
 
 options_VM_OR_LXC(){
-    systemtype=true #default value
+    systemtype=VM #default value
 
     echo ""
     echo "------------NneonNetwork-----------------"
-    echo "Nix: Alright now that I have what Distro, Is this for a VM or LXC?"
+    echo "Nix: Alright now that I have what Distro, Now lets figure which systemtype this is ...."
     echo "-----------------------------------------"
-    read -rp
-sleep 2.3
-    
-    
-    
-    
-    case "$systemtype" in
+    sleep 2.3
+    clear
+    echo ""
+    echo "------------NneonNetwork-----------------"
+    echo "1) Use Defualt (VM)"
+    echo "2) Manual Overide"
+    echo "3) Cancel script"
+    echo "-----------------------------------------"
+    read -rp "Nix: By default I automatically use $systemtype. Tell me, Should I use default? (1-3): "systemtypechoice
+    sleep 2.1
+    case "$systemtypechoice" in
+        1)
+            clear
+            echo ""
+            echo "------------NneonNetwork-----------------"
+            echo "Using Default ($systemtype), I'll now proceed with setting up this system..."
+            echo "-----------------------------------------"
+            sleep 2.3
+            clear
+            ;;
+        2) 
+            clear
+            echo ""
+            echo "------------NneonNetwork-----------------"
+            echo "Nix: Manual Override Has been Selected..."
+            echo "-----------------------------------------"
+            sleep 2.2
+            read -rp "Nix: Please Tell me if You are using LXC or VM You are using?: "manualsystemtype
+            echo ""
+            systemtype="$manualsystemtype"
+            while true; do
+                read -rp "Nix: You have entered $systemtype, is this correct? (Yes | No): " systemtypecorrect
+                case "$systemtypecorrect" in
+                    Yes|yes|Y|y)
+                        echo "-----------------------------------------"
+                        echo "Thank you for confirming that it was correct, I'll now proceed with setting up this system... using $systemtype"
+                        echo ""
+                        sleep 2.3
+                        clear
+                        break
+                        ;;
+                    No|no|N|n)
+                        clear
+                        echo ""
+                        echo "------------NneonNetwork-----------------"
+                        read -rp "Nix: Please Retype what. is it a VM or LXC? you are using? Sorry that got it wrong.: " manualdistro
+                        systemtype="$manualsystemtype"
+                        ;;
+                esac         
+            done
+            ;;
+        *)
+            echo ""
+            echo "------------NneonNetwork-----------------"
+            echo "Nix: Canceling Process.."
+            echo "-----------------------------------------"
+            sleep 2.1
+            exit 1
+            ;;
 
-        true)
-            echo "true"
-            ;;
-        false) 
-            echo "false"
-            ;;
     esac
 
-
-
-
+    
 
 }
