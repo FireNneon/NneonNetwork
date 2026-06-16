@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2034
 source ./loadinganimation.sh
 options_distro_specfics (){
 
@@ -127,7 +128,7 @@ options_VM_OR_LXC(){
     echo "------------NneonNetwork-----------------"
     echo "Nix: Alright now that I have what Distro, Now lets figure which systemtype this is ...."
     echo "-----------------------------------------"
-    sleep 2.3
+    sleep 2.4
     clear
     echo ""
     echo "------------NneonNetwork-----------------"
@@ -136,7 +137,6 @@ options_VM_OR_LXC(){
     echo "3) Cancel script"
     echo "-----------------------------------------"
     read -rp "Nix: By default I automatically use $systemtype. Tell me, Should I use default? (1-3): " systemtypechoice
-    sleep 2.1
     case "$systemtypechoice" in
         1)
             clear
@@ -172,7 +172,7 @@ options_VM_OR_LXC(){
                         clear
                         echo ""
                         echo "------------NneonNetwork-----------------"
-                        read -rp "Nix: Please Retype what. is it a VM or LXC? you are using? Sorry that got it wrong.: " manualdistro
+                        read -rp "Nix: Please Retype if this is a LXC or VM? Sorry that got it wrong.: " manualdistro
                         systemtype="$manualsystemtype"
                         ;;
                 esac         

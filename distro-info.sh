@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# shellcheck disable=SC2034
 source /etc/os-release 
 
 #This script finds out the distro and packagemanager. 
@@ -9,7 +9,6 @@ case "$ID" in
         distro="rocky"
         ;;
     ubuntu)
-    # shellcheck disable=SC2034
         distro="ubuntu"
         ;;
     *)
@@ -27,7 +26,6 @@ case "$ID" in
         pk="dnf"
         ;;
     ubuntu | Ubuntu | Debian | debian)
-        # shellcheck disable=SC2034
         pk="apt"
         ;;
     *)

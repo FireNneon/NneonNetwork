@@ -1,8 +1,8 @@
 #!/bin/bash
-
+# shellcheck disable=SC2154
 harden_ssh() {
 	#Harden SSH
-	sudo cp /"$distro"/sshd_config /etc/ssh/sshd_config
+	sudo cp ./"$distro"/sshd_config /etc/ssh/sshd_config
 	sudo chown root:root /etc/ssh/sshd_config && sudo chmod 644 /etc/ssh/sshd_config
 	sudo systemctl daemon-reload
 	sudo systemctl restart ssh
@@ -14,7 +14,7 @@ first_steps() {
 	elif [ "$distro" = ubuntu ]; then
 		sudo "$pk" update && sudo apt upgrade -y
 	fi
-	sudo "$pk" install curl git -y
+	sudo "$pk" install curl git nano -y
 	sudo "$pk" install qemu-guest-agent -y 
 }
 
@@ -31,6 +31,7 @@ install_tailscale() {
 	#----------------------------------------------------
 	curl -fsSL https://tailscale.com/install.sh | sudo sh
 	sudo systemctl enable --now tailscaled
+	sudo tailscale set --operator="$USER"
 	sleep 2
 	#----------------------------------------------------
 }
