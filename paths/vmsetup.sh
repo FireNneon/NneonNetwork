@@ -10,7 +10,7 @@ SetupVM(){
 	echo "------------NneonNetwork-----------------"
 	echo "Nix: Before we Start Setting up the VM I have Some Questions for you."
 	echo "-----------------------------------------"
-	sleep 2.2
+	sleep 2.3
 	clear
 	Vm_Options
 

@@ -29,7 +29,7 @@ options_distro_specfics (){
             echo "-----------------------------------------"
             echo "Thank you for confirming that it was correct, I'll now proceed with setting up this system..."
             echo ""
-            sleep 2.3
+            sleep 2.4
             clear
             ;;
         No|no|N|n)
@@ -204,21 +204,22 @@ Vm_Options(){
     echo "------------NneonNetwork-----------------"
     echo "Nix: Now for the next question..."
     echo "-----------------------------------------"
-    sleep 2.1
+    sleep 2.3
     clear
     echo ""
     echo "------------NneonNetwork-----------------"
     echo "1) Install just docker"
-    echo "2) Install just Borg"
-    echo "3) Install Just"
+    echo "2) Install just Borg (Currently not setup)"
+    echo "3) ALL (Install all the bits)"
+	echo "4) Non of the above"
     echo "-----------------------------------------"
-    read -rp "Nix: Out of these extra bits, what would you like? (1-4): " extras
+    read -rp "Nix: Out of these extra bits, what would you like? (1, 3 or 4): " extras
     sleep 2.1
     clear
     echo ""
     echo "------------NneonNetwork-----------------"
     echo "Nix: Alright, thank you for answering my Questions, now proceeding with VM Setup..."
     echo "-----------------------------------------"
-    sleep 2.2    
+    sleep 2.3
     clear
 }
