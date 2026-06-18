@@ -4,37 +4,40 @@ source /etc/os-release
 
 #This script finds out the distro and packagemanager. 
 
+
+#Distro logic. 
 case "$ID" in
-    rocky)
-        distro="rocky"
-        ;;
-    ubuntu)
-        distro="ubuntu"
-        ;;
-    *)
-        echo ""
-        echo "------------NneonNetwork-----------------"
-        echo "Nix: Sadly, I don't recognize the Distro that was detected. I'm sorry... Canceling Process.."
-        echo "-----------------------------------------"
-        sleep 2.1
-        exit 1
-        ;;
+	rocky)
+		distro="rocky"
+		;;
+	ubuntu)
+		distro="ubuntu"
+		;;
+	*)
+		echo ""
+		echo "------------NneonNetwork-----------------"
+		echo "Nix: Sadly, I don't recognize the Distro that was detected. I'm sorry... Canceling Process.."
+		echo "-----------------------------------------"
+		sleep 2.1
+		exit 1
+		;;
 esac
 
+#Packagemanager logic.
 case "$ID" in
-    rocky | Rocky | Fedora | fedora | RHEL | rhel)
-        pk="dnf"
-        ;;
-    ubuntu | Ubuntu | Debian | debian)
-        pk="apt"
-        ;;
-    *)
-        echo ""
-        echo "------------NneonNetwork-----------------"
-        echo "Nix: Sadly, I don't recognize the package manager that was detected. I'm sorry... Canceling Process.."
-        echo "-----------------------------------------"
-        sleep 2.1
-        exit 1
-        ;;
+	rocky | Rocky | Fedora | fedora | RHEL | rhel)
+		pk="dnf"
+		;;
+	ubuntu | Ubuntu | Debian | debian)
+		pk="apt"
+		;;
+	*)
+		echo ""
+		echo "------------NneonNetwork-----------------"
+		echo "Nix: Sadly, I don't recognize the package manager that was detected. I'm sorry... Canceling Process.."
+		echo "-----------------------------------------"
+		sleep 2.1
+		exit 1
+		;;
 esac
 

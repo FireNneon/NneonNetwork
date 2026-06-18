@@ -11,4 +11,11 @@ options_distro_specfics
 # Stage 2 Are we setting up VM or LXC? (Default VM)
 options_VM_OR_LXC
 
-echo "This message is for testing, the distro currently set is $distro and the PackageManager is $pk. The system type is $systemtype"
+case $systemtype in
+	VM)
+		SetupVM
+		;;
+	LXC)
+		SetupLXC
+		;;
+esac

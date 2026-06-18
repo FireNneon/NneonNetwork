@@ -7,20 +7,6 @@
 
 
 
-
-VM_Specifics() {
-	# Expand LVM to use full disk
-	sudo lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv
-
-	sudo resize2fs /dev/ubuntu-vg/ubuntu-lv
-
-	sudo lvextend -l +100%FREE /dev/rl_borgbackupserver/root
-	sudo xfs_growfs /
-
-	#install qemu-guest-agent, tailscale, etc. 
-
-	sudo apt install qemu-guest-agent -y 
-}
 #--------------------------------------------------
 #DEV Saved commands
 
@@ -122,7 +108,7 @@ case "$doingtype" in
 
 			esac
 			;;
-    	#LXC
+		#LXC
 		LXC) 
 			# Update the VM Ubuntu and install tailscale, Crowdsec, and remove bloatware. 
 			first_steps
@@ -132,7 +118,7 @@ case "$doingtype" in
 			echo "System prepaired for LXC!! :}"
 			sleep 3
 			;;
-    	*)
+		*)
 			clear
 			echo "Invalid input, Canceling whole script..."
 			sleep 2

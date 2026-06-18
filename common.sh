@@ -1,5 +1,6 @@
 #!/bin/bash
 # shellcheck disable=SC2154
+source ./distros/rocky/rocky-swap.sh
 harden_ssh() {
 	#Harden SSH
 	sudo cp ./"$distro"/sshd_config /etc/ssh/sshd_config
@@ -9,9 +10,9 @@ harden_ssh() {
 	sudo systemctl enable --now ssh
 }
 first_steps() {
-	if [ "$distro" = rocky ]; then 
+	if [[ $distro = rocky ]]; then 
 		sudo "$pk" update -y
-	elif [ "$distro" = ubuntu ]; then
+	elif [[ "$distro" = ubuntu ]]; then
 		sudo "$pk" update && sudo apt upgrade -y
 	fi
 	sudo "$pk" install curl git nano -y
@@ -40,4 +41,8 @@ install_defaults() {
 	install_crowdsec
 	install_tailscale
 	harden_ssh
+}
+
+disable_swap (){
+rocky_swap
 }

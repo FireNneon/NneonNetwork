@@ -1,6 +1,8 @@
 #!/bin/bash
 # shellcheck disable=SC2034
 source ./loadinganimation.sh
+
+
 options_distro_specfics (){
 
     LoadingAnimation
@@ -23,7 +25,7 @@ options_distro_specfics (){
 
     #Logic for is this correct question. yes = just proceed, no = Ask to do a manual override. Which will allow you to manually type a distro name (can be anything), and then will ask if said distro uses DNF, APT, or other. 
     case "$correctdistro" in
-        Yes|yes|Y|y)
+    	Yes|yes|Y|y)
             echo "-----------------------------------------"
             echo "Thank you for confirming that it was correct, I'll now proceed with setting up this system..."
             echo ""
@@ -78,17 +80,17 @@ options_distro_specfics (){
                     # This Asks about if the manual distro that was typed uses DNF, apt, or other. Important override. 
                     echo ""
                     echo "------------NneonNetwork-----------------"
-                    echo "1) Uses dnf (Example: Fedora)"
+                    echo "1) Uses dnf (Example: Fedora, Rocky,RHEL )"
                     echo " 2) Uses apt (Example: Ubuntu)"
                     echo " 3) other (doesn't use either)"
                     echo "-----------------------------------------"
                     read -rp "Nix: Does $distro use dnf or apt? Please Select an Option. (1-3): " pkinfo
                     #logic for to change PackageManger
                     case "$pkinfo" in
-                        1 | Rocky | rocky | Fedora | fedora | RHEL | rhel)
+                        1)
                             pk="dnf"
                             ;;
-                        2 | Ubuntu | ubuntu | Debian | debian)
+                        2)
                             pk="apt"
                             ;;
                         3)
@@ -191,4 +193,32 @@ options_VM_OR_LXC(){
 
     
 
+}
+
+Vm_Options(){
+    echo "------------NneonNetwork-----------------"
+    read -rp "Nix: First Question, Would you like me to stripped this vm to it's core? (No Docker, No Crowdsec, No Borg, bare essensitals) (Yes | No): " stripped
+    echo "-----------------------------------------"
+    sleep 2.1
+    clear
+    echo "------------NneonNetwork-----------------"
+    echo "Nix: Now for the next question..."
+    echo "-----------------------------------------"
+    sleep 2.1
+    clear
+    echo ""
+    echo "------------NneonNetwork-----------------"
+    echo "1) Install just docker"
+    echo "2) Install just Borg"
+    echo "3) Install Just"
+    echo "-----------------------------------------"
+    read -rp "Nix: Out of these extra bits, what would you like? (1-4): " extras
+    sleep 2.1
+    clear
+    echo ""
+    echo "------------NneonNetwork-----------------"
+    echo "Nix: Alright, thank you for answering my Questions, now proceeding with VM Setup..."
+    echo "-----------------------------------------"
+    sleep 2.2    
+    clear
 }

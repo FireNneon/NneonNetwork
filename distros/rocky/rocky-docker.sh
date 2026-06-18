@@ -2,15 +2,15 @@
 rocky_docker(){
 #remove old docker, just in case it's there. So we start fresh. 
 sudo dnf remove -y docker \
-                  docker-client \
-                  docker-client-latest \
-                  docker-common \
-                  docker-latest \
-                  docker-latest-logrotate \
-                  docker-logrotate \
-                  docker-engine \
-                  podman \
-                  runc
+				  docker-client \
+				  docker-client-latest \
+				  docker-common \
+				  docker-latest \
+				  docker-latest-logrotate \
+				  docker-logrotate \
+				  docker-engine \
+				  podman \
+				  runc
 
 sudo dnf -y install dnf-plugins-core -y
 

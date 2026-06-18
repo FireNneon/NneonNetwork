@@ -12,7 +12,7 @@ debloat_ubuntu() {
 	sudo apt autoremove -y
 }
 
-Ubuntu_Specifics() {
+ubuntu_specifics() {
 	# Expand LVM to use full disk
 	sudo lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv
 
