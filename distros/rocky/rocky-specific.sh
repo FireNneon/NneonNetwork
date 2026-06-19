@@ -20,7 +20,7 @@ sshd_override(){
 	sudo systemctl daemon-reload
 }
 
-rocky-specific(){
+rocky_specific(){
 	docker_override
 	sshd_override
 }

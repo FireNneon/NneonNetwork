@@ -24,6 +24,7 @@ SetupVM(){
 
 				1)
 					first_steps
+					declare -f install_docker
 					install_docker
 					;;
 				2) 
@@ -32,6 +33,7 @@ SetupVM(){
 					;;
 				3)
 					first_steps
+					declare -f install_docker
 					install_docker
 					sleep 2.1
 					#install_borg #WIP
@@ -60,7 +62,7 @@ SetupVM(){
 			fi
 					
 			if [[ "$distro" = rocky ]]; then
-				rocky-specific
+				rocky_specific
 			elif [[ "$distro" = ubuntu ]]; then
 				ubuntu_specifics
 			fi

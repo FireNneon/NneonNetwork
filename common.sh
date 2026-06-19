@@ -3,11 +3,16 @@
 source ./distros/rocky/rocky-swap.sh
 harden_ssh() {
 	#Harden SSH
-	sudo cp ./"$distro"/sshd_config /etc/ssh/sshd_config
+	sudo cp ./distros/"$distro"/sshd_config /etc/ssh/sshd_config
 	sudo chown root:root /etc/ssh/sshd_config && sudo chmod 644 /etc/ssh/sshd_config
 	sudo systemctl daemon-reload
-	sudo systemctl restart ssh
-	sudo systemctl enable --now ssh
+	if [[ "$distro" = rocky ]]; then
+		sudo systemctl restart sshd
+		sudo systemctl enable --now sshd
+	elif [[ "$distro" = ubuntu ]]; then
+		sudo systemctl restart ssh
+		sudo systemctl enable --now ssh
+	fi
 }
 first_steps() {
 	if [[ $distro = rocky ]]; then 
