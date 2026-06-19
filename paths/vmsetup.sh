@@ -12,7 +12,7 @@ SetupVM(){
 	echo "Nix: Before we Start Setting up the VM I have Some Questions for you."
 	echo "-----------------------------------------"
 	sleep 2.5
-	sleep 2.5
+	sleep 2.1
 	clear
 	Vm_Options
 	sudo chronyc -a makestep
