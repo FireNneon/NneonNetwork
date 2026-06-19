@@ -11,10 +11,10 @@ SetupVM(){
 	echo "------------NneonNetwork-----------------"
 	echo "Nix: Before we Start Setting up the VM I have Some Questions for you."
 	echo "-----------------------------------------"
-	sleep 2.4
+	sleep 2.5
 	clear
 	Vm_Options
-
+	chronyc -a makestep
 
 	case "$stripped" in
 		Yes|yes|Y|y)
@@ -33,7 +33,6 @@ SetupVM(){
 					;;
 				3)
 					first_steps
-					declare -f install_docker
 					install_docker
 					sleep 2.1
 					#install_borg #WIP
@@ -56,14 +55,11 @@ SetupVM(){
 					;;
 			esac
 			sleep 2.1
-							
-			if [[ "$distro" = ubuntu ]]; then
-				debloat_ubuntu
-			fi
-					
+				
 			if [[ "$distro" = rocky ]]; then
 				rocky_specific
 			elif [[ "$distro" = ubuntu ]]; then
+				debloat_ubuntu
 				ubuntu_specifics
 			fi
 					

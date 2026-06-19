@@ -98,6 +98,8 @@ options_distro_specfics (){
                         echo "------------NneonNetwork-----------------"
                         echo "Nix: At this time I only understand Dnf and Apt. Sorry... Canceling Process.."
                         echo "-----------------------------------------"
+						sleep 2.1
+						exit 1
                         ;;
                     esac
                     ;;
@@ -130,7 +132,7 @@ options_VM_OR_LXC(){
     echo "------------NneonNetwork-----------------"
     echo "Nix: Alright now that I have what Distro, Now lets figure which systemtype this is ...."
     echo "-----------------------------------------"
-    sleep 3
+    sleep 3.1
     clear
     echo ""
     echo "------------NneonNetwork-----------------"
@@ -174,7 +176,7 @@ options_VM_OR_LXC(){
                         clear
                         echo ""
                         echo "------------NneonNetwork-----------------"
-                        read -rp "Nix: Please Retype if this is a LXC or VM? Sorry that got it wrong.: " manualdistro
+                        read -rp "Nix: Please Retype if this is a LXC or VM? Sorry that got it wrong.: " manualsystemtype
                         systemtype="$manualsystemtype"
                         ;;
                 esac         
@@ -196,9 +198,29 @@ options_VM_OR_LXC(){
 }
 
 Vm_Options(){
-    echo "------------NneonNetwork-----------------"
-    read -rp "Nix: First Question, Would you like me to stripped this vm to it's core? (No Docker, No Crowdsec, No Borg, bare essensitals) (Yes | No): " stripped
-    echo "-----------------------------------------"
+	while true; do 
+    	echo "------------NneonNetwork-----------------"
+    	read -rp "Nix: First Question, Would you like me to stripped this vm to it's core? (No Docker, No Crowdsec, No Borg, bare essensitals) (Yes | No): " stripped
+    	echo "-----------------------------------------"
+		case $stripped in
+			Yes|yes|Y|y)
+				stripped="yes | Yes"
+				break
+				;;
+			No|no|N|n)
+				stripped=no
+				break
+				;;
+			*)
+				echo "------------NneonNetwork-----------------"
+				echo -rp "Nix: I'm sorry, but Could you repeat your answer, I sadly don't understand what you have given"
+				echo "-----------------------------------------"
+				sleep 2.2
+				;;
+
+		esac
+	done
+
     sleep 2.3
     clear
     echo "------------NneonNetwork-----------------"
@@ -206,15 +228,47 @@ Vm_Options(){
     echo "-----------------------------------------"
     sleep 2.3
     clear
-    echo ""
-    echo "------------NneonNetwork-----------------"
-    echo "1) Install just docker"
-    echo "2) Install just Borg (Currently not setup)"
-    echo "3) ALL (Install all the bits)"
-	echo "4) Non of the above"
-    echo "-----------------------------------------"
-    read -rp "Nix: Out of these extra bits, what would you like? (1, 3 or 4): " extras
-    sleep 2.1
+    while true; do
+		echo ""
+    	echo "------------NneonNetwork-----------------"
+    	echo "1) Install just docker"
+    	echo "2) Install just Borg (Currently not setup)"
+    	echo "3) ALL (Install all the bits)"
+		echo "4) Non of the above"
+    	echo "-----------------------------------------"
+    	read -rp "Nix: Out of these extra bits, what would you like? (1, 3 or 4): " extras
+		case $extras in
+			1)
+				extras=1
+				break
+				;;
+			2)
+				extras=2
+				break
+				;;
+			3)
+				extras=3
+				break
+				;;
+			4) 
+				extras=4
+				break
+				;;
+
+			*)
+				echo "------------NneonNetwork-----------------"
+				echo -rp "Nix: I'm sorry, but Could you repeat your answer, I sadly don't understand what you have given"
+				echo "-----------------------------------------"
+				sleep 2.2
+				;;
+
+		esac 
+
+    done
+	
+	
+	
+	sleep 2.1
     clear
     echo ""
     echo "------------NneonNetwork-----------------"
