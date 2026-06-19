@@ -130,7 +130,7 @@ options_VM_OR_LXC(){
     echo "------------NneonNetwork-----------------"
     echo "Nix: Alright now that I have what Distro, Now lets figure which systemtype this is ...."
     echo "-----------------------------------------"
-    sleep 2.4
+    sleep 3
     clear
     echo ""
     echo "------------NneonNetwork-----------------"
@@ -155,7 +155,7 @@ options_VM_OR_LXC(){
             echo "------------NneonNetwork-----------------"
             echo "Nix: Manual Override Has been Selected..."
             echo "-----------------------------------------"
-            sleep 2.2
+            sleep 2.3
             read -rp "Nix: Please Tell me if You are using LXC or VM You are using?: " manualsystemtype
             echo ""
             systemtype="$manualsystemtype"
@@ -199,7 +199,7 @@ Vm_Options(){
     echo "------------NneonNetwork-----------------"
     read -rp "Nix: First Question, Would you like me to stripped this vm to it's core? (No Docker, No Crowdsec, No Borg, bare essensitals) (Yes | No): " stripped
     echo "-----------------------------------------"
-    sleep 2.1
+    sleep 2.3
     clear
     echo "------------NneonNetwork-----------------"
     echo "Nix: Now for the next question..."

@@ -1,8 +1,9 @@
 #!/bin/bash
-source ../paths/strippedsetup.sh
-source ../distros/rocky/rocky-specific.sh
-source ../distros/ubuntu/ubuntu-specific.sh
-source ../install-docker.sh
+# shellcheck disable=SC1091
+source ./paths/strippedsetup.sh
+source ./distros/rocky/rocky-specific.sh
+source ./distros/ubuntu/ubuntu-specific.sh
+source ./install-docker.sh
 # shellcheck disable=SC2154
 
 SetupVM(){
@@ -10,7 +11,7 @@ SetupVM(){
 	echo "------------NneonNetwork-----------------"
 	echo "Nix: Before we Start Setting up the VM I have Some Questions for you."
 	echo "-----------------------------------------"
-	sleep 2.3
+	sleep 2.4
 	clear
 	Vm_Options
 
@@ -24,7 +25,6 @@ SetupVM(){
 
 				1)
 					first_steps
-					declare -f install_docker
 					install_docker
 					;;
 				2) 
