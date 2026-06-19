@@ -132,7 +132,8 @@ options_VM_OR_LXC(){
     echo "------------NneonNetwork-----------------"
     echo "Nix: Alright now that I have what Distro, Now lets figure which systemtype this is ...."
     echo "-----------------------------------------"
-    sleep 3.1
+	sleep 3.1
+    sleep 2.4
     clear
     echo ""
     echo "------------NneonNetwork-----------------"
@@ -201,14 +202,16 @@ Vm_Options(){
 	while true; do 
     	echo "------------NneonNetwork-----------------"
     	read -rp "Nix: First Question, Would you like me to stripped this vm to it's core? (No Docker, No Crowdsec, No Borg, bare essensitals) (Yes | No): " stripped
-    	echo "-----------------------------------------"
+		sleep 2.3
 		case $stripped in
 			Yes|yes|Y|y)
 				stripped="yes | Yes"
+				clear
 				break
 				;;
 			No|no|N|n)
 				stripped=no
+				clear
 				break
 				;;
 			*)
@@ -216,13 +219,12 @@ Vm_Options(){
 				echo -rp "Nix: I'm sorry, but Could you repeat your answer, I sadly don't understand what you have given"
 				echo "-----------------------------------------"
 				sleep 2.2
+				clear
 				;;
 
 		esac
 	done
-
     sleep 2.3
-    clear
     echo "------------NneonNetwork-----------------"
     echo "Nix: Now for the next question..."
     echo "-----------------------------------------"
@@ -237,6 +239,7 @@ Vm_Options(){
 		echo "4) Non of the above"
     	echo "-----------------------------------------"
     	read -rp "Nix: Out of these extra bits, what would you like? (1, 3 or 4): " extras
+		sleep 2.3
 		case $extras in
 			1)
 				extras=1
