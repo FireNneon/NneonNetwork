@@ -14,7 +14,7 @@ SetupVM(){
 	sleep 2.5
 	clear
 	Vm_Options
-	chronyc -a makestep
+	sudo chronyc -a makestep
 
 	case "$stripped" in
 		Yes|yes|Y|y)
@@ -55,7 +55,7 @@ SetupVM(){
 					;;
 			esac
 			sleep 2.1
-				
+
 			if [[ "$distro" = rocky ]]; then
 				rocky_specific
 			elif [[ "$distro" = ubuntu ]]; then
