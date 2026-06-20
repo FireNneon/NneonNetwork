@@ -1,0 +1,139 @@
+services:
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:${prowlarr_version}
+    container_name: prowlarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ./prowlarr:/config
+    ports:
+      - ${LISTEN_ADDRESS}:9696:9696
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETUID
+      - SETGID
+      #- CHOWN
+    networks:
+      - internal_ARR
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:${sonarr_version}
+    container_name: sonarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ./sonarr:/config
+      - /mnt/jellyfin-media:/data
+      #- /path/to/tvseries:/tv #optional
+      #- /path/to/downloadclient-downloads:/downloads #optional
+    ports:
+      - ${LISTEN_ADDRESS}:8989:8989
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETUID
+      - SETGID
+      #- CHOWN
+    networks:
+      - internal_ARR
+  radarr:
+    image: lscr.io/linuxserver/radarr:${radarr_version}
+    container_name: radarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ./radarr:/config
+      - /mnt/jellyfin-media:/data
+      #- path/to/movies:/movies #optional
+      #- /path/to/download-client-downloads:/downloads #optional
+    ports:
+      - ${LISTEN_ADDRESS}:7878:7878
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETUID
+      - SETGID
+      #- CHOWN
+    networks:
+      - internal_ARR
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:${qbittorrent_version}
+    container_name: qbittorrent
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - WEBUI_PORT=8080
+      - TORRENTING_PORT=6881
+    volumes:
+      - ./qbittorrent:/config
+      - /mnt/jellyfin-media:/data
+      #- /path/to/qbittorrent/appdata:/config
+      #- /path/to/downloads:/downloads #optional
+    network_mode: "service:gluetun"
+    depends_on:
+      - gluetun
+    stop_grace_period: "10s" #optional
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETUID
+      - SETGID
+      #- CHOWN
+  gluetun:
+    image: qmcgaw/gluetun:${gluetun_version}
+    container_name: gluetun
+    # line above must be uncommented to allow external containers to connect.
+    # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/connect-a-container-to-gluetun.md#external-container-to-gluetun
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    ports:
+      - ${LISTEN_ADDRESS}:8080:8080
+      - 6881:6881
+      - 6881:6881/udp
+    volumes:
+      - ./gluetun:/gluetun
+    environment:
+      # See https://github.com/qdm12/gluetun-wiki/tree/main/setup#setup
+      # or https://github.com/qdm12/gluetun-wiki/tree/main/setup/providers
+      - VPN_SERVICE_PROVIDER=mullvad
+      - VPN_TYPE=wireguard
+      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_KEY}
+      - WIREGUARD_ADDRESSES=${WIREGUARD_ADDRESS}
+      # Timezone for accurate log times
+      - TZ=${TZ}
+      # Server list updater
+      # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/servers.md#update-the-vpn-servers-list
+      - UPDATER_PERIOD=480h
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      #- SETUID
+      #- SETGID
+      #- CHOWN
+      - NET_ADMIN #this was listed on the example compose.
+    networks:
+      - internal_ARR
+networks:
+  internal_ARR:
+    driver: bridge
