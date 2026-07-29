@@ -20,7 +20,8 @@ Include /etc/ssh/sshd_config.d/*.conf
 #
 Port 22
 #AddressFamily any
-ListenAddress 0.0.0.0
+## I normally Set ListenAddress to my tailscale Net. As part of my hardening steps. 
+ListenAddress 0.0.0.0  
 #ListenAddress ::
 
 #----NneonNetwork Custom Section----

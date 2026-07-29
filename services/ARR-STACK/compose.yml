@@ -8,8 +8,8 @@ services:
       - TZ=${TZ}
     volumes:
       - ./prowlarr:/config
-    ports:
-      - ${LISTEN_ADDRESS}:9696:9696
+    #ports:
+      #- ${LISTEN_ADDRESS}:9696:9696
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -18,9 +18,13 @@ services:
     cap_add:
       - SETUID
       - SETGID
-      #- CHOWN
-    networks:
-      - internal_ARR
+      - CHOWN
+    #networks:
+      #- internal_ARR
+    network_mode: "service:gluetun"
+    depends_on:
+      - gluetun
+
   sonarr:
     image: lscr.io/linuxserver/sonarr:${sonarr_version}
     container_name: sonarr
@@ -33,8 +37,8 @@ services:
       - /mnt/jellyfin-media:/data
       #- /path/to/tvseries:/tv #optional
       #- /path/to/downloadclient-downloads:/downloads #optional
-    ports:
-      - ${LISTEN_ADDRESS}:8989:8989
+    #ports:
+      #- ${LISTEN_ADDRESS}:8989:8989
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -43,9 +47,13 @@ services:
     cap_add:
       - SETUID
       - SETGID
-      #- CHOWN
-    networks:
-      - internal_ARR
+      - CHOWN
+    #networks:
+    #  - internal_ARR
+    #  - frontend
+    network_mode: "service:gluetun"
+    depends_on:
+      - gluetun
   radarr:
     image: lscr.io/linuxserver/radarr:${radarr_version}
     container_name: radarr
@@ -56,10 +64,8 @@ services:
     volumes:
       - ./radarr:/config
       - /mnt/jellyfin-media:/data
-      #- path/to/movies:/movies #optional
-      #- /path/to/download-client-downloads:/downloads #optional
-    ports:
-      - ${LISTEN_ADDRESS}:7878:7878
+    #ports:
+      #- ${LISTEN_ADDRESS}:7878:7878
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -68,9 +74,166 @@ services:
     cap_add:
       - SETUID
       - SETGID
+      - CHOWN
+    #networks:
+      #- internal_ARR
+    network_mode: "service:gluetun"
+    depends_on:
+      - gluetun
+  flaresolverr:
+    # DockerHub mirror flaresolverr/flaresolverr:latest
+    image: ghcr.io/flaresolverr/flaresolverr:${flaresolverr_version}
+    container_name: flaresolverr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    #ports:
+      #- "${PORT:-8191}:8191"
+    #volumes:
+    #  - /var/lib/flaresolver:/config
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    #cap_add:
+      #- SETUID
+      #- SETGID
       #- CHOWN
+    #networks:
+      #- internal_ARR
+    network_mode: "service:gluetun"
+    depends_on:
+      - gluetun
+  seerr:
+    image: ghcr.io/seerr-team/seerr:${seerr_version}
+    init: true
+    user: "${PUID}:${PGID}"
+    container_name: seerr
+    environment:
+      - LOG_LEVEL=debug
+      #- PUID=${PUID}
+      #- PGID=${PGID}
+      - TZ=${TZ}
+      - PORT=5055 #optional
+    #ports:
+      #- ${LISTEN_ADDRESS}:5055:5055
+    volumes:
+      - ./seerr:/app/config
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/settings/public || exit 1
+      start_period: 20s
+      timeout: 3s
+      interval: 15s
+      retries: 3
+    restart: unless-stopped
+    #labels:
+    #  - 'traefik.enable=true'
+    #    ## HTTP Routers
+    #  - 'traefik.http.routers.seerr-rtr.entrypoints=https'
+    #  - 'traefik.http.routers.seerr-rtr.rule=Host(`seerr.domain.com`)'
+    #  - 'traefik.http.routers.seerr-rtr.tls=true'
+    #  ## HTTP Services
+    #  - 'traefik.http.routers.seerr-rtr.service=seerr-svc'
+    #  - 'traefik.http.services.seerr-svc.loadbalancer.server.port=5055'
     networks:
       - internal_ARR
+      - frontend
+    #network_mode: "service:gluetun"
+    #depends_on:
+    #  - gluetun
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    #cap_add:
+      #- SETUID
+      #- SETGID
+      #- CHOWN
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:${lidarr_version}
+    container_name: lidarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ./lidarr:/config
+      - /mnt/jellyfin-media:/data
+    #ports:
+      #- 8686:8686
+    restart: unless-stopped
+    #networks:
+      #- internal_ARR
+      #- frontend
+    network_mode: "service:gluetun"
+    depends_on:
+      - gluetun
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETUID
+      - SETGID
+      #- CHOWN
+  profilarr:
+    image: ghcr.io/dictionarry-hub/profilarr:${profilarr_version}
+    container_name: profilarr
+    #ports:
+      #- '6868:6868'
+    volumes:
+      - ./profilarr:/config
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      # Uncomment ORIGIN if you use a reverse proxy to access your containers.
+      #- ORIGIN=https://profilarr.yourdomain.com
+      #- PARSER_HOST=parser
+      #- PARSER_PORT=5000
+    #networks:
+    #  - internal_ARR
+    #  - frontend
+    network_mode: "service:gluetun"
+    depends_on:
+      - gluetun
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETUID
+      - SETGID
+      - CHOWN
+  #pinchflat:
+  #  image: ghcr.io/communitymaintained/pinchflat:${pinchflat_version}
+  #  container_name: pinchflat
+  #  user: "${PUID}:${PGID}"
+  #  environment:
+  #    #- PUID=${PUID}
+  #    #- PGID=${PGID}
+  #    - TZ=${TZ}Z}
+  #  #ports:
+  #  #  - '8945:8945'
+  #  volumes:
+  #    - ./pinchflat:/config
+  #    - /mnt/jellyfin-media/media/youtube:/downloads
+  #  #networks:
+  #  #  - internal_ARR
+  #  #  - frontend
+  #  network_mode: "service:gluetun"
+  #  depends_on:
+  #    - gluetun
+  #  security_opt:
+  #    - no-new-privileges:true
+  #  cap_drop:
+  #    - ALL
+  #  #cap_add:
+  #    #- SETUID
+  #    #- SETGID
+  #    #- CHOWN
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:${qbittorrent_version}
     container_name: qbittorrent
@@ -79,12 +242,10 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
       - WEBUI_PORT=8080
-      - TORRENTING_PORT=6881
+      #- TORRENTING_PORT=7881
     volumes:
-      - ./qbittorrent:/config
+      - ./:/config
       - /mnt/jellyfin-media:/data
-      #- /path/to/qbittorrent/appdata:/config
-      #- /path/to/downloads:/downloads #optional
     network_mode: "service:gluetun"
     depends_on:
       - gluetun
@@ -97,7 +258,7 @@ services:
     cap_add:
       - SETUID
       - SETGID
-      #- CHOWN
+      - CHOWN
   gluetun:
     image: qmcgaw/gluetun:${gluetun_version}
     container_name: gluetun
@@ -106,23 +267,39 @@ services:
     devices:
       - /dev/net/tun:/dev/net/tun
     ports:
-      - ${LISTEN_ADDRESS}:8080:8080
-      - 6881:6881
-      - 6881:6881/udp
+      - ${LISTEN_ADDRESS}:8080:8080 #Qbittorrent WebGUI
+      - ${LISTEN_ADDRESS}:9696:9696 #prowlarr WebGUI
+      - ${LISTEN_ADDRESS}:8989:8989 # Sonarr WebGUI
+      - ${LISTEN_ADDRESS}:7878:7878 # Radarr WebGUI
+      - ${LISTEN_ADDRESS}:8686:8686 # Lidarr WebGUI
+      - ${LISTEN_ADDRESS}:6868:6868 # Profilarr WebGUI
+      - ${LISTEN_ADDRESS}:8945:8945 # Pinchflat WebGUI
+      #- ${LISTEN_ADDRESS}:5055:5055 # Seerr WebGUI
+      - 8191:8191
+      #- 7881:7881 #qbittorrent downloading port
+      #- 7881:7881/udp #qbittorrent downloading  UDP port
     volumes:
       - ./gluetun:/gluetun
     environment:
       # See https://github.com/qdm12/gluetun-wiki/tree/main/setup#setup
       # or https://github.com/qdm12/gluetun-wiki/tree/main/setup/providers
-      - VPN_SERVICE_PROVIDER=mullvad
+      - VPN_SERVICE_PROVIDER=protonvpn
       - VPN_TYPE=wireguard
+      - SERVER_COUNTRIES=United States
+      #- SERVER_CITIES=New York NY
       - WIREGUARD_PRIVATE_KEY=${WIREGUARD_KEY}
-      - WIREGUARD_ADDRESSES=${WIREGUARD_ADDRESS}
+      #- WIREGUARD_ADDRESSES=${WIREGUARD_ADDRESS} # Only needed for some providers. 
       # Timezone for accurate log times
       - TZ=${TZ}
       # Server list updater
       # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/servers.md#update-the-vpn-servers-list
-      - UPDATER_PERIOD=480h
+      #- UPDATER_PERIOD=480h
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - PORT_FORWARD_ONLY=on
+      - VPN_PORT_FORWARDING=on
+      #- FIREWALL_VPN_INPUT_PORTS=7881
     security_opt:
       - no-new-privileges:true
     cap_drop:
@@ -132,8 +309,11 @@ services:
       #- SETGID
       #- CHOWN
       - NET_ADMIN #this was listed on the example compose.
+      - NET_RAW
     networks:
       - internal_ARR
 networks:
   internal_ARR:
     driver: bridge
+  frontend:
+    external: true

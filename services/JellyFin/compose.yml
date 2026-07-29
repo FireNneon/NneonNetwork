@@ -1,0 +1,33 @@
+services:
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:${jellyfin_version}
+    container_name: jellyfin
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - JELLYFIN_PublishedServerUrl=${JELLYFIN_PUBLISHEDURL} #optional
+    volumes:
+      - ./config:/config
+      - ./cache:/cache
+      - /mnt/jellyfin-media:/data:ro
+    #ports:
+      #- ${LISTENING_ADDRESS}8096:8096 # WebGUI HTTP
+      #- ${LISTENING_ADDRESS}:8920:8920 #optional WebGUI HTTPS
+      #- 7359:7359/udp #optional  Allows clients to discover Jellyfin on the local network
+      #- 1900:1900/udp #optional Service discovery used by DNLA and clients.
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETUID
+      - SETGID
+      - CHOWN
+    networks:
+      - frontend
+
+networks:
+  frontend:
+    external: true

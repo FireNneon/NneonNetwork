@@ -16,6 +16,6 @@ case $systemtype in
 		SetupVM
 		;;
 	LXC)
-		SetupLXC
+		SetupLXC # not setup yet
 		;;
 esac

@@ -1,0 +1,25 @@
+services:
+  it-tools:
+    user: "${PUID}:${PGID}"
+    container_name: it-tools
+    image: sharevb/it-tools:${ITTools_version}
+    pull_policy: always
+    restart: unless-stopped
+   # ports:
+     # - ${LISTENING_ADDRESS}:8080:8080
+     # OR
+     # - 8080:8080
+    networks:
+      - frontend
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    #healthcheck:
+      #test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      #interval: 30s
+      #timeout: 5s
+      #retries: 3
+networks:
+  frontend:
+    external: true
