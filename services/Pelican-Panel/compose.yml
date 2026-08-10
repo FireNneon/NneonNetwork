@@ -3,7 +3,7 @@ services:
     user: "${PUID}:${PGID}"
     group_add:
     - "82"
-    image: ghcr.io/pelican-dev/${PelicanPanel_version}
+    image: ghcr.io/pelican-dev/panel:${PelicanPanel_version}
     container_name: pelican-panel
     restart: always
     networks:
@@ -42,7 +42,7 @@ services:
       - pelican_internal
     volumes:
       - ./redis-data:/data
-    command: redis-server --appendonly yes --requirepass &{Redis_pass}
+    command: redis-server --appendonly yes --requirepass ${Redis_pass}
     security_opt:
       - no-new-privileges:true
     cap_drop:
