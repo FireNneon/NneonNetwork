@@ -1,7 +1,7 @@
 services:
   postgresql:
     env_file:
-    - .env
+    - ./.env
     environment:
       POSTGRES_DB: ${PG_DB:-authentik}
       POSTGRES_PASSWORD: ${PG_PASS:?database password required}
@@ -15,6 +15,8 @@ services:
       - pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}
       timeout: 5s
     image: docker.io/library/postgres:16-alpine
+    container_name: authentik-db
+    user: "${PUID}:${PGID}"
     restart: unless-stopped
     volumes:
     - ./authentikdb:/var/lib/postgresql/data
@@ -32,17 +34,19 @@ services:
       postgresql:
         condition: service_healthy
     env_file:
-    - .env
+    - ./.env
     environment:
       AUTHENTIK_POSTGRESQL__HOST: postgresql
       AUTHENTIK_POSTGRESQL__NAME: ${PG_DB:-authentik}
       AUTHENTIK_POSTGRESQL__PASSWORD: ${PG_PASS}
       AUTHENTIK_POSTGRESQL__USER: ${PG_USER:-authentik}
       AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY:?secret key required}
-    image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2026.2.1}
+    image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_VERSION:-2026.2.1}
+    container_name: authentik-server
+    user: "${PUID}:${PGID}"
     ports:
-    - ${LISTEN_ADDRES}:${COMPOSE_PORT_HTTP:-9000}:9000
-    - ${LISTEN_ADDRES}:${COMPOSE_PORT_HTTPS:-9443}:9443
+    - ${LISTEN_ADDRESS}:${COMPOSE_PORT_HTTP:-9000}:9000
+    - ${LISTEN_ADDRESS}:${COMPOSE_PORT_HTTPS:-9443}:9443
     restart: unless-stopped
     shm_size: 512mb
     volumes:
@@ -58,7 +62,7 @@ services:
       postgresql:
         condition: service_healthy
     env_file:
-    - .env
+    - ./.env
     environment:
       AUTHENTIK_POSTGRESQL__HOST: postgresql
       AUTHENTIK_POSTGRESQL__NAME: ${PG_DB:-authentik}
@@ -66,9 +70,10 @@ services:
       AUTHENTIK_POSTGRESQL__USER: ${PG_USER:-authentik}
       AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY:?secret key required}
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_version:-2026.2.1}
+    container_name: authentik-worker
+    user: "${PUID}:${PGID}"
     restart: unless-stopped
     shm_size: 512mb
-    user: root
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock
     - ./data:/datac

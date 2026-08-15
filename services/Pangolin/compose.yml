@@ -1,0 +1,96 @@
+name: pangolin
+services:
+  pangolin:
+    image: docker.io/fosrl/pangolin:${pangolin_version}
+    container_name: pangolin
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+        reservations:
+          memory: 256m
+    volumes:
+      - ./gerbil:/app/config
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/v1/"]
+      interval: "10s"
+      timeout: "10s"
+      retries: 15
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+  gerbil:
+    image: docker.io/fosrl/gerbil:${gerbil_version}
+    container_name: gerbil
+    restart: unless-stopped
+    depends_on:
+      pangolin:
+        condition: service_healthy
+    command:
+      - --reachableAt=http://gerbil:3004
+      - --generateAndSaveKeyTo=/var/config/key
+      - --remoteConfig=http://pangolin:3001/api/v1/
+    volumes:
+      - ./config/:/var/config
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    cap_drop: 
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - 51821:51821/udp # Newt
+      - 21820:21820/udp # Gerbil
+      - 443:443
+      #- 80:80
+
+  traefik:
+    image: docker.io/traefik:${traefik_version}
+    container_name: traefik
+    restart: unless-stopped
+    network_mode: service:gerbil # Ports appear on the gerbil service
+    depends_on:
+      pangolin:
+        condition: service_healthy
+    command:
+      - --configFile=/etc/traefik/traefik_config.yml
+     # Add the environment variables for your DNS provider.
+    environment:
+      CLOUDFLARE_DNS_API_TOKEN: "${CLOUDFLARE_TOKEN}" #${cloudflare_token}
+    volumes:
+      - ./traefik:/etc/traefik:ro # Volume to store the Traefik configuration
+      - ./traefik/letsencrypt:/letsencrypt # Volume to store the Let's Encrypt certificates
+      - ./traefik/logs:/var/log/traefik # Volume to store Traefik logs
+      - ./traefik/rules:/rules
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+  middleware-manager:
+    image: hhftechnology/middleware-manager:${middlewar_manager_version}
+    container_name: middleware-manager
+    restart: unless-stopped
+    volumes:
+     - ./middleware:/data
+     #- ./config/middleware-manager:/app/config
+     - ./config/traefik/rules:/conf
+     - ./middleware/templates.yaml:/app/config/templates.yaml  # Optional custom templates
+    environment:
+     - PANGOLIN_API_URL=http://pangolin:3001/api/v1
+     - TRAEFIK_CONF_DIR=/conf
+     - DB_PATH=/data/middleware.db
+     - PORT=3458
+    cap_drop:
+     - ALL
+    security_opt:
+     - no-new-privileges:true
+    ports:
+     - "${LISTENING_ADDRESS}:3458:3458"
+
+networks:
+  default:
+    driver: bridge
+    name: pangolin
