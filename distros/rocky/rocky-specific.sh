@@ -13,6 +13,7 @@ install_netfilter_extras() {	# This "install_netfilter_extras" snippet of code w
     echo "xt_mark" | sudo tee -a /etc/modules-load.d/xt_mark.conf
 }
 
+
 docker_override(){
 	# Makes the directory if it isn't already
 	sudo mkdir -p /etc/systemd/system/docker.service.d
@@ -32,7 +33,6 @@ sshd_override(){
 }
 
 rocky_specific(){
-	install_netfilter_extras
 	docker_override
 	sshd_override
 }

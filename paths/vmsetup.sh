@@ -26,6 +26,7 @@ SetupVM(){
 
 				1)
 					first_steps
+					install_netfilter_extras
 					install_docker
 					;;
 				2) 
@@ -34,6 +35,7 @@ SetupVM(){
 					;;
 				3)
 					first_steps
+					install_netfilter_extras
 					install_docker
 					sleep 2.1
 					#install_borg #WIP

@@ -42,27 +42,38 @@ install_tailscale() {
 	#----------------------------------------------------
 	clear
 	echo "------------NneonNetwork-----------------"
-	echo "Nix: alright going to stop the install for now, I need some stuff from you that are required now that we have tailscale installed."
-	echo "-----------------------------------------"
-	sleep 2.4
-	clear
-	echo "------------NneonNetwork-----------------"
-	read -rsp "Nix: Alright, First up, Please provide your authkey_token from either headscale or tailscale: " ts_authkey
-	clear
-	echo "------------NneonNetwork-----------------"
-	echo "Nix: Thank you for providing me with the token, now for the next question"
-	echo "-----------------------------------------"
-	sleep 2.3
-	clear
-	echo "------------NneonNetwork-----------------"
-	read -rp "Nix: Next up, could you provide me with the address of your Tailscale or headscale control server? (https://headscale.example.com): " ts_server
-	clear
-	echo "------------NneonNetwork-----------------"
-	echo "Nix: alright, thank you again, I'll now use the provided answers to setup tailscale for you..."
-	echo "-----------------------------------------"
-	sleep 2.3
-	clear
-	sudo tailscale up --login-server="$ts_server" --authkey="$ts_authkey"
+	read -rp "Nix: Okay I gotta stop the setup for now, I need know if you want me to setup Tailscale automatically for you or do you want todo it manually? (yes or no?): " tailscale_auto
+		if [[$tailscale_auto = yes]]
+			clear
+			echo "------------NneonNetwork-----------------"
+			echo "Nix: Okay, you want me to set it up for you, before I can do that, you need to answer some questions for me. :]: "
+			echo "-----------------------------------------"
+			sleep 2.1
+			clear
+			echo "------------NneonNetwork-----------------"
+			read -rsp "Nix: Alright, First up, Please provide your pre-authkey_token from either headscale or tailscale: " ts_authkey
+			clear
+			echo "------------NneonNetwork-----------------"
+			echo "Nix: Thank you for providing me with the token, now for the next question"
+			echo "-----------------------------------------"
+			sleep 2.3
+			clear
+			echo "------------NneonNetwork-----------------"
+			read -rp "Nix: Next up, could you provide me with the address of your Tailscale or headscale control server? (https://headscale.example.com): " ts_server
+			clear
+			echo "------------NneonNetwork-----------------"
+			echo "Nix: alright, thank you again, I'll now use the provided answers to setup tailscale for you..."
+			echo "-----------------------------------------"
+			sleep 2.3
+			clear
+			sudo tailscale up --login-server="$ts_server" --authkey="$ts_authkey"
+			
+		elif [[$tailscale_auto = no]]
+			clear
+			echo "------------NneonNetwork-----------------"
+			echo "Nix: okay you want todo it manually. Continuing..."
+			echo "-----------------------------------------"
+		fi; 
 }
 
 install_defaults() {
