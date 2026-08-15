@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck disable=SC2154
+
 source ./distros/rocky/rocky-swap.sh
 harden_ssh() {
 	#Harden SSH
@@ -43,7 +43,7 @@ install_tailscale() {
 	clear
 	echo "------------NneonNetwork-----------------"
 	read -rp "Nix: Okay I gotta stop the setup for now, I need know if you want me to setup Tailscale automatically for you or do you want todo it manually? (yes or no?): " tailscale_auto
-		if [[ "$tailscale_auto" = yes ]]
+		if [[ "$tailscale_auto" = yes ]]; then
 			clear
 			echo "------------NneonNetwork-----------------"
 			echo "Nix: Okay, you want me to set it up for you, before I can do that, you need to answer some questions for me. :]: "
@@ -67,13 +67,12 @@ install_tailscale() {
 			sleep 2.3
 			clear
 			sudo tailscale up --login-server="$ts_server" --authkey="$ts_authkey"
-
-		elif [[ "$tailscale_auto" = no ]]
+		elif [[ "$tailscale_auto" = no ]]; then
 			clear
 			echo "------------NneonNetwork-----------------"
 			echo "Nix: okay you want todo it manually. Continuing..."
 			echo "-----------------------------------------"
-		fi; 
+		fi
 }
 
 install_defaults() {
