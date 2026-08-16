@@ -60,6 +60,14 @@ install_tailscale() {
 			echo "------------NneonNetwork-----------------"
 			echo "Nix: alright, thank you again, I'll now use the provided answers to setup tailscale for you..."
 			echo "-----------------------------------------"
+			#----------------------------------------------------
+			curl -fsSL https://tailscale.com/install.sh | sudo sh
+			sudo systemctl enable --now tailscaled
+			sudo tailscale set --operator="$USER"
+			sleep 2
+			#----------------------------------------------------
+			clear
+			sudo tailscale up --login-server="$ts_server" --authkey="$ts_authkey"
 			sleep 2.3
 			clear
 			;;
@@ -69,6 +77,13 @@ install_tailscale() {
 			echo "------------NneonNetwork-----------------"
 			echo "Nix: okay you want todo it manually. Continuing..."
 			echo "-----------------------------------------"
+			sleep 2.0
+			#----------------------------------------------------
+			curl -fsSL https://tailscale.com/install.sh | sudo sh
+			sudo systemctl enable --now tailscaled
+			sudo tailscale set --operator="$USER"
+			sleep 2
+			#---------------------------------------------------
 			sleep 2.3
 			clear
 			;;
@@ -76,16 +91,16 @@ install_tailscale() {
 			echo "------------NneonNetwork-----------------"
 			echo "Nix: Sadly I don't understand..., I'll just default to Manual and continue the script since we are so close to done...."
 			echo "-----------------------------------------"
+			sleep 2.3
+			clear
+			#----------------------------------------------------
+			curl -fsSL https://tailscale.com/install.sh | sudo sh
+			sudo systemctl enable --now tailscaled
+			sudo tailscale set --operator="$USER"
+			sleep 2
+			#----------------------------------------------------
 			;;
 	esac
-	#----------------------------------------------------
-	curl -fsSL https://tailscale.com/install.sh | sudo sh
-	sudo systemctl enable --now tailscaled
-	sudo tailscale set --operator="$USER"
-	sleep 2
-	#----------------------------------------------------
-	clear
-	sudo tailscale up --login-server="$ts_server" --authkey="$ts_authkey"
 }
 
 install_defaults() {
