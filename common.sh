@@ -78,6 +78,12 @@ install_tailscale() {
 			echo "Nix: okay you want todo it manually. Continuing..."
 			echo "-----------------------------------------"
 			sleep 2.0
+			clear
+			echo "------------NneonNetwork-----------------"
+			echo "Nix: Do note, manual will break SSHD service. delete or edit SSH override file to fix. and possibly docker override file as well."
+			echo "-----------------------------------------"
+			sleep 2.0
+			clear
 			#----------------------------------------------------
 			curl -fsSL https://tailscale.com/install.sh | sudo sh
 			sudo systemctl enable --now tailscaled
