@@ -80,9 +80,9 @@ install_tailscale() {
 			sleep 2.0
 			clear
 			echo "------------NneonNetwork-----------------"
-			echo "Nix: Do note, manual will break SSHD service. delete or edit SSH override file to fix. and possibly docker override file as well."
+			echo "Nix: Do note, manual will break SSHD service. delete or edit SSH override file to fix, the ExecStartPre line is the conflicting factor, sense it requires tailscale to be connected and running. Possibly docker override file as well needs editing..."
 			echo "-----------------------------------------"
-			sleep 2.0
+			sleep 3.2
 			clear
 			#----------------------------------------------------
 			curl -fsSL https://tailscale.com/install.sh | sudo sh
