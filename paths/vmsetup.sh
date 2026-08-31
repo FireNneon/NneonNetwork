@@ -60,7 +60,7 @@ SetupVM(){
 			sleep 2.1
 			
 			if [[ "$distro" = rocky ]]; then
-				rocky_specific
+				rocky_VM_specific
 			elif [[ "$distro" = ubuntu ]]; then
 				debloat_ubuntu
 				ubuntu_specifics
