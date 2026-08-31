@@ -1,6 +1,7 @@
 name: pangolin
 services:
   pangolin:
+    user: "${PUID}:${PGID}"
     image: docker.io/fosrl/pangolin:${pangolin_version}
     container_name: pangolin
     restart: unless-stopped
@@ -11,7 +12,7 @@ services:
         reservations:
           memory: 256m
     volumes:
-      - ./gerbil:/app/config
+      - ./pangolin:/app/config
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3001/api/v1/"]
       interval: "10s"
@@ -22,6 +23,7 @@ services:
     security_opt:
       - no-new-privileges:true
   gerbil:
+    #user: "${PUID}:${PGID}"
     image: docker.io/fosrl/gerbil:${gerbil_version}
     container_name: gerbil
     restart: unless-stopped
@@ -30,14 +32,15 @@ services:
         condition: service_healthy
     command:
       - --reachableAt=http://gerbil:3004
-      - --generateAndSaveKeyTo=/var/config/key
+      - --generateAndSaveKeyTo=${savekey}
       - --remoteConfig=http://pangolin:3001/api/v1/
     volumes:
-      - ./config/:/var/config
+      - ./pangolin:/var/config
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    cap_drop: 
+      #- SYS_ADMIN
+    cap_drop:
       - ALL
     security_opt:
       - no-new-privileges:true
@@ -46,8 +49,8 @@ services:
       - 21820:21820/udp # Gerbil
       - 443:443
       #- 80:80
-
   traefik:
+    user: "${PUID}:${PGID}"
     image: docker.io/traefik:${traefik_version}
     container_name: traefik
     restart: unless-stopped
@@ -61,35 +64,39 @@ services:
     environment:
       CLOUDFLARE_DNS_API_TOKEN: "${CLOUDFLARE_TOKEN}" #${cloudflare_token}
     volumes:
-      - ./traefik:/etc/traefik:ro # Volume to store the Traefik configuration
-      - ./traefik/letsencrypt:/letsencrypt # Volume to store the Let's Encrypt certificates
-      - ./traefik/logs:/var/log/traefik # Volume to store Traefik logs
-      - ./traefik/rules:/rules
+      - ./pangolin/traefik:/etc/traefik:ro # Volume to store the Traefik configuration
+      - ./pangolin/traefik/letsencrypt:/letsencrypt # Volume to store the Let's Encrypt certificates
+      - ./pangolin/traefik/logs:/var/log/traefik # Volume to store Traefik logs
+      - ./pangolin/traefik/rules:/rules
+      - ./pangolin/traefik/plugins-storage:/plugins-storage
     cap_drop:
       - ALL
     security_opt:
       - no-new-privileges:true
   middleware-manager:
-    image: hhftechnology/middleware-manager:${middlewar_manager_version}
+    user: "${PUID}:${PGID}"
+    image: hhftechnology/middleware-manager:${middleware_manager_version}
     container_name: middleware-manager
+    network_mode: service:gerbil
     restart: unless-stopped
     volumes:
-     - ./middleware:/data
-     #- ./config/middleware-manager:/app/config
-     - ./config/traefik/rules:/conf
-     - ./middleware/templates.yaml:/app/config/templates.yaml  # Optional custom templates
+     - ./middleware-manager:/data
+     - ./middleware-manager/config:/app/config
+     - ./pangolin/traefik/rules:/conf
+     #- ./middleware-manager/templates.yaml:/app/config/templates.yaml  # Optional custom templates
     environment:
+    - ACTIVE_DATA_SOURCE=pangolin
      - PANGOLIN_API_URL=http://pangolin:3001/api/v1
      - TRAEFIK_CONF_DIR=/conf
+     - TRAEFIK_STATIC_CONFIG_PATH=/etc/traefik/traefik_config.yml
      - DB_PATH=/data/middleware.db
-     - PORT=3458
+     - PORT=3456
     cap_drop:
      - ALL
     security_opt:
      - no-new-privileges:true
     ports:
-     - "${LISTENING_ADDRESS}:3458:3458"
-
+     - "${LISTENING_ADDRESS}:3456:3456"
 networks:
   default:
     driver: bridge

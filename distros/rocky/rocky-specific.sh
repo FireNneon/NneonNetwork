@@ -32,7 +32,10 @@ sshd_override(){
 	sudo systemctl daemon-reload
 }
 
-rocky_specific(){
+rocky_VM_specific(){
 	docker_override
+	sshd_override
+}
+rocky_LXC_specific(){
 	sshd_override
 }

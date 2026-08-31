@@ -58,7 +58,7 @@ SetupVM(){
 					;;
 			esac
 			sleep 2.1
-
+			
 			if [[ "$distro" = rocky ]]; then
 				rocky_specific
 			elif [[ "$distro" = ubuntu ]]; then

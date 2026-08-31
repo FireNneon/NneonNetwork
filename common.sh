@@ -19,7 +19,7 @@ first_steps() {
 	if [[ $distro = rocky ]]; then 
 		sudo "$pk" update -y
 	elif [[ "$distro" = ubuntu ]]; then
-		sudo "$pk" update && sudo apt upgrade -y
+		sudo "$pk" update && sudo "$pk" upgrade -y
 	fi
 	sudo "$pk" install curl git nano -y
 	sudo "$pk" install qemu-guest-agent -y 
@@ -116,5 +116,5 @@ install_defaults() {
 }
 
 disable_swap (){
-rocky_swap
+	rocky_swap
 }
