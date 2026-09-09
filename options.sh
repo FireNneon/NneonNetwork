@@ -205,7 +205,7 @@ Vm_Options(){
 		sleep 2.3
 		case $stripped in
 			Yes|yes|Y|y)
-				stripped="yes | Yes"
+				stripped="yes"
 				clear
 				break
 				;;
@@ -238,7 +238,7 @@ Vm_Options(){
     	echo "3) ALL (Install all the bits)"
 		echo "4) Non of the above"
     	echo "-----------------------------------------"
-    	read -rp "Nix: Out of these extra bits, what would you like? (1, 3 or 4): " extras
+    	read -rp "Nix: Out of these extra bits, what would you like? (All of theses includes the normal defaults) (1, 3 or 4): " extras
 		sleep 2.3
 		case $extras in
 			1)
@@ -280,3 +280,77 @@ Vm_Options(){
     sleep 2.3
     clear
 }
+
+LXC_Options(){
+	while true; do 
+    	echo "------------NneonNetwork-----------------"
+    	read -rp "Nix: First Question, Would you like me to stripped this LXC to it's core? (No Crowdsec, No Borg, bare essensitals) (Yes | No): " stripped
+		sleep 2.3
+		case $stripped in
+			Yes|yes|Y|y)
+				stripped="yes"
+				clear
+				break
+				;;
+			No|no|N|n)
+				stripped="no"
+				clear
+				break
+				;;
+			*)
+				echo "------------NneonNetwork-----------------"
+				echo -rp "Nix: I'm sorry, but Could you repeat your answer, I sadly don't understand what you have given"
+				echo "-----------------------------------------"
+				sleep 2.2
+				clear
+				;;
+
+		esac
+	done
+    sleep 2.3
+    echo "------------NneonNetwork-----------------"
+    echo "Nix: Now for the next question..."
+    echo "-----------------------------------------"
+    sleep 2.3
+    clear
+    while true; do
+		echo ""
+    	echo "------------NneonNetwork-----------------"
+    	echo "1) Install Borg (Currently not setup so both of these options will do the same currently)"
+		echo "2) Don't Install borg"
+    	echo "-----------------------------------------"
+    	read -rp "Nix: Would You like to install borg or leave borg out? (1, 2): " extras
+		sleep 2.3
+		case $extras in
+			1)
+				extras=1
+				break
+				;;
+			2)
+				extras=2
+				break
+				;;
+
+			*)
+				echo "------------NneonNetwork-----------------"
+				echo -rp "Nix: I'm sorry, but Could you repeat your answer, I sadly don't understand what you have given"
+				echo "-----------------------------------------"
+				sleep 2.2
+				;;
+
+		esac 
+
+    done
+	
+	
+	
+	sleep 2.1
+    clear
+    echo ""
+    echo "------------NneonNetwork-----------------"
+    echo "Nix: Alright, thank you for answering my Questions, now proceeding with LXC Setup..."
+    echo "-----------------------------------------"
+    sleep 2.3
+    clear
+
+};

@@ -74,7 +74,9 @@ SetupVM(){
 			#elif [[ "$distro" = ubuntu ]]; then  #maybe future placement.
 			#ubuntu_swap 
 			fi
-					
+
+			autoremove
+
 			clear
 			echo "------------NneonNetwork-----------------"
 			echo "Nix: This VM is now ready for you, it's been a pleasure. Farewell Tell we meet again o/"

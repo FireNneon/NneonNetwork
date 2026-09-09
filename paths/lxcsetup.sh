@@ -4,53 +4,15 @@ source ./distros/rocky/rocky-specific.sh
 source ./distros/ubuntu/ubuntu-specific.sh
 # shellcheck disable=SC2154
 
- # THIS IS A DRAFT not working AT ALL!!!!
 SetupLXC(){
-	echo "------------NneonNetwork-----------------"
-	echo "Nix: Alrighty, setting up the LXC is pretty straight forward, I'll stop if I have a question :}"
-	echo "-----------------------------------------"
-	sleep 2.0
-	clear
-	sudo chronyc -a makestep
-
-	first_steps
-
-	if [[ "$distro" = rocky ]]; then
-		rocky_specific
-	elif [[ "$distro" = ubuntu ]]; then
-		debloat_ubuntu
-		ubuntu_specifics
-	fi
-
-						
-	clear
-	echo "------------NneonNetwork-----------------"
-	echo "Nix: This VM is now ready for you, it's been a pleasure. Farewell Tell we meet again o/"
-	echo ""
-	echo "   .     . "
-	echo " {_________} "
-	echo "-----------------------------------------"
-	sleep 2.3
-
-}
-
-#!/bin/bash
-# shellcheck disable=SC1091
-source ./paths/strippedsetup.sh
-source ./distros/rocky/rocky-specific.sh
-source ./distros/ubuntu/ubuntu-specific.sh
-source ./install-docker.sh
-# shellcheck disable=SC2154
-
-SetupVM(){
 	echo ""
 	echo "------------NneonNetwork-----------------"
-	echo "Nix: Before we Start Setting up the VM I have Some Questions for you."
+	echo "Nix: Before we Start Setting up the LXC I have Some Questions for you."
 	echo "-----------------------------------------"
 	sleep 2.5
 	sleep 2.1
 	clear
-	Vm_Options
+	LXC_Options
 	sudo chronyc -a makestep
 
 	case "$stripped" in
@@ -60,29 +22,13 @@ SetupVM(){
 		No|no|N|n)
 			case "$extras" in 
 
-				1)
-					first_steps
-					install_netfilter_extras
-					install_docker
-					;;
-				2) 
+				1) 
 					first_steps
 					#install_borg #WIP
 					;;
-				3)
+				2)
 					first_steps
-					install_netfilter_extras
-					install_docker
 					sleep 2.1
-					#install_borg #WIP
-					;;
-				4)
-					clear
-					echo "------------NneonNetwork-----------------"
-					echo "Nix: You have selected No extras. now proceeding with setup.."
-					echo "-----------------------------------------"
-					sleep 2.1
-					first_steps
 					;;
 				*)
 					clear
@@ -96,7 +42,7 @@ SetupVM(){
 			sleep 2.1
 			
 			if [[ "$distro" = rocky ]]; then
-				rocky_specific
+				rocky_LXC_specific
 			elif [[ "$distro" = ubuntu ]]; then
 				debloat_ubuntu
 				ubuntu_specifics
@@ -104,16 +50,11 @@ SetupVM(){
 					
 			sleep 2.1
 			install_defaults
-					
-			if [[ "$distro" = rocky ]]; then
-			rocky_swap
-			#elif [[ "$distro" = ubuntu ]]; then  #maybe future placement.
-			#ubuntu_swap 
-			fi
-					
+			autoremove
+			
 			clear
 			echo "------------NneonNetwork-----------------"
-			echo "Nix: This VM is now ready for you, it's been a pleasure. Farewell Tell we meet again o/"
+			echo "Nix: This LXC is now ready for you, it's been a pleasure. Farewell Tell we meet again o/"
 			echo ""
 			echo "   .     . "
 			echo " {_________} "
@@ -123,7 +64,7 @@ SetupVM(){
 		*)
 			clear
 			echo "------------NneonNetwork-----------------"
-			echo "Nix: I don't understand.. Sorry, I'll have to cancel the process and the script o/."
+			echo "Nix: Umm, something went wrong. Sorry, I'll have to cancel the process and the script o/."
 			echo "-----------------------------------------"
 
 			exit 1

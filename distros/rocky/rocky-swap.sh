@@ -14,13 +14,12 @@ rocky_swap() {
 
 	clear
 	currentmem=$(free -h | grep Mem)
+	
 	echo "------------NneonNetwork-----------------"
 	echo "Nix: Before I can continue with this step Of the swapfile, I need to know what size to use...."
 	echo "-----------------------------------------"
 	sleep 2.0
 	clear
-	
-
 	while true; do
 		echo "------------NneonNetwork-----------------"
 		echo "1) I want 1G for the size"
@@ -29,6 +28,7 @@ rocky_swap() {
 		echo "4) I want 8G for the size (Default)"
 		echo "5) I want to tell you specifically what I want"
 		echo ""
+		echo "Nix: current memory: $currentmem"
 		read -rp "Nix: From these options what would you like todo? 1-5: " swapoption
 		swapanswer="$swapoption"
 

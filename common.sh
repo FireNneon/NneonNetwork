@@ -22,7 +22,18 @@ first_steps() {
 		sudo "$pk" update && sudo "$pk" upgrade -y
 	fi
 	sudo "$pk" install curl git nano -y
-	sudo "$pk" install qemu-guest-agent -y 
+
+	if [[ $systemtype = VM ]]; then 
+		sudo "$pk" install qemu-guest-agent -y 
+	fi
+}
+
+autoremove(){
+	if [[ $distro = rocky ]]; then 
+		sudo "$pk" autoremove -y
+	elif [[ "$distro" = ubuntu ]]; then
+		sudo "$pk" autoremove
+	fi
 }
 
 install_crowdsec() {
