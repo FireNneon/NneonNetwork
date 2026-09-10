@@ -7,6 +7,9 @@ harden_ssh() {
 	sudo cp ./distros/"$distro"/sshd_config /etc/ssh/sshd_config
 	sudo chown root:root /etc/ssh/sshd_config && sudo chmod 644 /etc/ssh/sshd_config
 	sudo systemctl daemon-reload
+	
+	
+	
 	if [[ "$distro" = rocky ]]; then
 		sudo systemctl restart sshd
 		sudo systemctl enable --now sshd

@@ -2,6 +2,7 @@
 # shellcheck disable=SC1091
 source ./distros/rocky/rocky-specific.sh
 source ./distros/ubuntu/ubuntu-specific.sh
+source ./install-docker.sh
 # shellcheck disable=SC2154
 
 SetupLXC(){
@@ -50,6 +51,8 @@ SetupLXC(){
 					
 			sleep 2.1
 			install_defaults
+			#create the folder where I store my apps and services.
+			sudo mkdir -p /opt/services/
 			autoremove
 			
 			clear
