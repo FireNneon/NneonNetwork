@@ -3,7 +3,7 @@ services:
     user: "${PUID}:${PGID}"
     group_add:
     - "82"
-    image: ghcr.io/pelican-dev/panel:${PelicanPanel_version}
+    image: ghcr.io/pelican/panel:${PelicanPanel_version}
     container_name: pelican-panel
     restart: always
     networks:

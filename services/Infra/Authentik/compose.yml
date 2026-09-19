@@ -79,10 +79,13 @@ services:
     - ./data:/datac
     - ./certs:/certs
     - ./custom-templates:/templates
+    security_opt:
+      - no-new-privileges:true
     cap_drop:
       - ALL
     cap_add: 
       - FOWNER
       - CHOWN
       - SETGID
-      - SETUID
+      - SETUID      network:
+        - Piped_internal

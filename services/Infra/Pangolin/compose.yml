@@ -3,7 +3,7 @@ services:
   pangolin:
     user: "${PUID}:${PGID}"
     image: docker.io/fosrl/pangolin:${pangolin_version}
-    container_name: pangolin
+    conpactainer_name: pangolin
     restart: unless-stopped
     deploy:
       resources:
