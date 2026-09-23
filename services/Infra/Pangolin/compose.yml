@@ -3,7 +3,7 @@ services:
   pangolin:
     user: "${PUID}:${PGID}"
     image: docker.io/fosrl/pangolin:${pangolin_version}
-    conpactainer_name: pangolin
+    container_name: pangolin
     restart: unless-stopped
     deploy:
       resources:
@@ -59,7 +59,7 @@ services:
       pangolin:
         condition: service_healthy
     command:
-      - --configFile=/etc/traefik/traefik_config.yml
+      - --configFile=/etc/traefik/traefik.yml
      # Add the environment variables for your DNS provider.
     environment:
       CLOUDFLARE_DNS_API_TOKEN: "${CLOUDFLARE_TOKEN}" #${cloudflare_token}
@@ -77,18 +77,19 @@ services:
     user: "${PUID}:${PGID}"
     image: hhftechnology/middleware-manager:${middleware_manager_version}
     container_name: middleware-manager
-    network_mode: service:gerbil
+    #network_mode: service:gerbil
     restart: unless-stopped
     volumes:
      - ./middleware-manager:/data
      - ./middleware-manager/config:/app/config
      - ./pangolin/traefik/rules:/conf
+     - ./pangolin/traefik:/etc/traefik
      #- ./middleware-manager/templates.yaml:/app/config/templates.yaml  # Optional custom templates
     environment:
     - ACTIVE_DATA_SOURCE=pangolin
      - PANGOLIN_API_URL=http://pangolin:3001/api/v1
      - TRAEFIK_CONF_DIR=/conf
-     - TRAEFIK_STATIC_CONFIG_PATH=/etc/traefik/traefik_config.yml
+     - TRAEFIK_STATIC_CONFIG_PATH=/etc/traefik/traefik.yml
      - DB_PATH=/data/middleware.db
      - PORT=3456
     cap_drop:

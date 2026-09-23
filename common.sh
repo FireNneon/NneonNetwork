@@ -27,7 +27,9 @@ first_steps() {
 	sudo "$pk" install curl git nano -y
 
 	if [[ $systemtype = VM ]]; then 
-		sudo "$pk" install qemu-guest-agent -y 
+		sudo "$pk" install qemu-guest-agent -y
+	elif [[ $systemtype = LXC ]]; then
+		sudo dnf install nano git openssh-server chrony policycoreutils-python-utils curl
 	fi
 }
 
@@ -45,7 +47,31 @@ install_crowdsec() {
  	sudo "$pk" install crowdsec -y
  	sleep 2
  	sudo systemctl enable --now crowdsec
- 	#----------------------------------------------------
+	sleep 2.5
+	
+	
+	sudo cscli setup detect | sudo tee /tmp/crowdsecdetection.txt > /dev/null
+	sleep 1.5
+	
+	sudo cscli setup cscli setup install-acquisition /tmp/crowdsecdetection.txt
+	sleep 1.5
+	
+	cscli setup install-hub /tmp/crowdsecdetection.txt
+	sleep 1.5
+	
+	sudo dnf install -y crowdsec-firewall-bouncer-iptables
+	sudo systemctl enable --now crowdsec-firewall-bouncer
+	sudo systemctl daemon-reload
+	sleep 2.5
+	
+	sudo systemctl restart crowdsec
+	machineid=$(sudo journalctl -u crowdsec | awk '/machine/ {for (i=1; i<=NF; i++) if ($i == "machine") print $(i+1)}' | awk 'NR == 1 {print}')
+	sleep 2.0
+	clear
+	echo "------------NneonNetwork-----------------"
+	read -rp "Nix: Okay I gotta stop the setup for now, I need you to use $machineid to validate this crowdsec instance, go to your main crowdsec machine and validate it, I'll wait :] (press to continue)"	
+	sleep 2.3
+	clear
 }
 
 install_tailscale() {
@@ -72,16 +98,33 @@ install_tailscale() {
 			read -rp "Nix: Next up, could you provide me with the address of your Tailscale or headscale control server? (https://headscale.example.com): " ts_server
 			clear
 			echo "------------NneonNetwork-----------------"
-			echo "Nix: alright, thank you again, I'll now use the provided answers to setup tailscale for you..."
+			read -rp "Nix: alright, thank you again, I'll now use the provided answers to setup tailscale for you... but to confirm you still want me to do it automaically for you? (Yes or No): " tailconfirm
 			echo "-----------------------------------------"
+			clear
+			sleep 2.3
+			if [[ $tailconfirm = Yes ]]; then 
+				echo "------------NneonNetwork-----------------"
+				echo "Nix: Okay, You decided you want me set it up still, I'll continue install tailscale and set it up for you. :}"
+				echo "-----------------------------------------"
+				sleep 2.4
+			elif [[ "$tailconfirm" = No ]]; then
+				echo "------------NneonNetwork-----------------"
+				echo "Nix: Okay, You decided you want to set it up manually instead, I'll continue install tailscale and you can do that. :}"
+				echo "-----------------------------------------"
+				sleep 2.4
+			fi
+			clear
 			#----------------------------------------------------
 			curl -fsSL https://tailscale.com/install.sh | sudo sh
 			sudo systemctl enable --now tailscaled
 			sudo tailscale set --operator="$USER"
 			sleep 2
 			#----------------------------------------------------
-			clear
-			sudo tailscale up --login-server="$ts_server" --authkey="$ts_authkey"
+			
+			if [[ $tailconfirm = Yes ]]; then 
+				sudo tailscale up --login-server="$ts_server" --authkey="$ts_authkey"
+			fi
+			
 			sleep 2.3
 			clear
 			;;
