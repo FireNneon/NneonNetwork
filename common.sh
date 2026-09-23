@@ -63,8 +63,8 @@ install_crowdsec() {
 	sudo systemctl enable --now crowdsec-firewall-bouncer
 	sudo systemctl daemon-reload
 	sleep 2.5
-	
 	sudo systemctl restart crowdsec
+	sleep 2.5
 	machineid=$(sudo journalctl -u crowdsec | awk '/machine/ {for (i=1; i<=NF; i++) if ($i == "machine") print $(i+1)}' | awk 'NR == 1 {print}')
 	sleep 2.0
 	clear
@@ -167,8 +167,8 @@ install_tailscale() {
 }
 
 install_defaults() {
-	install_crowdsec
 	install_tailscale
+	install_crowdsec
 	harden_ssh
 }
 
