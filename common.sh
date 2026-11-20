@@ -17,6 +17,10 @@ harden_ssh() {
 		sudo systemctl restart ssh
 		sudo systemctl enable --now ssh
 	fi
+	# Harden PAM - COMING SOON
+	#sudo authselect enable-feature without-nullok
+	#sudo authselect apply-changes -b
+
 }
 first_steps() {
 	if [[ $distro = rocky ]]; then 
@@ -27,7 +31,7 @@ first_steps() {
 	sudo "$pk" install curl git nano -y
 
 	if [[ $systemtype = VM ]]; then 
-		sudo "$pk" install qemu-guest-agent -y
+		sudo "$pk" install qemu-guest-agent -y && sudo systemctl enable --now qemu-guest-agent
 	elif [[ $systemtype = LXC ]]; then
 		sudo dnf install nano git openssh-server chrony policycoreutils-python-utils curl
 	fi
@@ -41,7 +45,9 @@ autoremove(){
 	fi
 }
 
-install_crowdsec() {
+#Future me SLOT this into crowdsec sudo cscli lapi register -u http://<crowdsec-lxc-tailscale-ip>:8080 --machine "${HOSTNAME,,}"
+
+install_crowdsec() { 
  	#----------------------------------------------------
  	curl -s https://install.crowdsec.net | sudo sh
  	sudo "$pk" install crowdsec -y
@@ -53,10 +59,10 @@ install_crowdsec() {
 	sudo cscli setup detect | sudo tee /tmp/crowdsecdetection.txt > /dev/null
 	sleep 1.5
 	
-	sudo cscli setup cscli setup install-acquisition /tmp/crowdsecdetection.txt
+	sudo cscli setup install-acquisition /tmp/crowdsecdetection.txt
 	sleep 1.5
 	
-	cscli setup install-hub /tmp/crowdsecdetection.txt
+	sudo cscli setup install-hub /tmp/crowdsecdetection.txt
 	sleep 1.5
 	
 	sudo dnf install -y crowdsec-firewall-bouncer-iptables

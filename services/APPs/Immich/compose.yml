@@ -2,7 +2,7 @@ name: immich
 services:
   immich-server:
     container_name: immich_server
-    image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
+    image: ghcr.io/open-noodle/gallery-server:${IMMICH_VERSION:-release}
     user: "${PUID}:${PGID}"
     # For hardware acceleration, uncomment the extends section below
     # and set the service to one of [nvenc, quicksync, rkmpp, vaapi, vaapi-wsl]
@@ -10,9 +10,12 @@ services:
     #   file: hwaccel.transcoding.yml
     #   service: cpu
     volumes:
-      - ${UPLOAD_LOCATION}:/usr/src/app/upload
+      - ${UPLOAD_LOCATION}:/data
+      - ${THUMB_LOCATION}:/data/thumbs
+      - ${ENCODED_VIDEO_LOCATION}:/data/encoded-video
+      - ${PROFILE_LOCATION}:/data/profile
+      - ${BACKUP_LOCATION}:/data/backups
       - /etc/localtime:/etc/localtime:ro
-      - ${UPLOAD_LOCATION}/synced:/synced
     env_file:
       - .env
     depends_on:
@@ -31,7 +34,7 @@ services:
 
   immich-machine-learning:
     container_name: immich_machine_learning
-    image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}
+    image: ghcr.io/open-noodle/gallery-ml:${IMMICH_VERSION:-release}
     user: "${PUID}:${PGID}"
     environment:
       MPLCONFIGDIR: /tmp/matplotlib
@@ -60,15 +63,18 @@ services:
     image: docker.io/valkey/valkey:9@sha256:3eeb09785cd61ec8e3be35f8804c8892080f3ca21934d628abc24ee4ed1698f6
     user: "${PUID}:${PGID}"
     restart: unless-stopped
+    command: valkey-server --requirepass ${REDIS_PASSWORD}
+    environment:
+      REDISCLI_AUTH: ${REDIS_PASSWORD}
     volumes:
       - ./redis:/data
     security_opt:
       - no-new-privileges:true
     cap_drop:
       - ALL
-    cap_add:
-      - SETUID
-      - SETGID
+    #cap_add:
+      #- SETUID
+      #- SETGID
     networks:
       - immich_internal
     healthcheck:
