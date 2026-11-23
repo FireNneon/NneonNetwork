@@ -71,18 +71,20 @@ install_crowdsec() {
 	sleep 2.5
 	sudo systemctl restart crowdsec
 	sleep 2.5
-	machineid=$(sudo journalctl -u crowdsec | awk '/machine/ {for (i=1; i<=NF; i++) if ($i == "machine") print $(i+1)}' | awk 'NR == 1 {print}')
-	sleep 2.0
 	clear
-	echo "------------NneonNetwork-----------------"
-	read -rp "Nix: Okay I gotta stop the setup for now, I need you to use $machineid to validate this crowdsec instance, go to your main crowdsec machine and validate it, I'll wait :] (press to continue)"	
-	sleep 2.3
-	clear
+	
+	# This area seems to not work as I want it to so for now it's going to be commented out. 
+	#machineid=$(sudo journalctl -u crowdsec | awk '/machine/ {for (i=1; i<=NF; i++) if ($i == "machine") print $(i+1)}' | awk 'NR == 1 {print}')
+	#sleep 2.0
+	#echo "------------NneonNetwork-----------------"
+	#read -rp "Nix: Okay I gotta stop the setup for now, I need you to use $machineid to validate this crowdsec instance, go to your main crowdsec machine and validate it, I'll wait :] (press to continue)"	
+	#sleep 2.3
+	#clear
 }
 
 install_tailscale() {
 	echo "------------NneonNetwork-----------------"
-	read -rp "Nix: Okay I gotta stop the setup for now, I need know if you want me to setup Tailscale automatically for you or do you want todo it manually? once I know this I'll install tailscale client either way. (yes or no?): " tailscale_auto
+	read -rp "Nix: Okay I gotta stop the setup for now, I need to know if you want me to setup Tailscale automatically for you or if you want todo it manually? once I know this I'll install tailscale client either way. (yes or no?): " tailscale_auto
 	case "$tailscale_auto" in
 		Yes | yes | y)
 			
@@ -104,21 +106,22 @@ install_tailscale() {
 			read -rp "Nix: Next up, could you provide me with the address of your Tailscale or headscale control server? (https://headscale.example.com): " ts_server
 			clear
 			echo "------------NneonNetwork-----------------"
-			read -rp "Nix: alright, thank you again, I'll now use the provided answers to setup tailscale for you... but to confirm you still want me to do it automaically for you? (Yes or No): " tailconfirm
+			read -rp "Nix: alright, thank you again, I'll now use the provided answers to setup tailscale for you... but can you confirm that you still want me to do it automaically for you? (Yes or No): " tailconfirm
 			echo "-----------------------------------------"
 			clear
 			sleep 2.3
-			if [[ $tailconfirm = Yes ]]; then 
+			if [[ $tailconfirm = Yes ]]; then # I can see an issue here and I'll need to fix it later, currently this basically done one thing. it will always will do it manually for you lol.
 				echo "------------NneonNetwork-----------------"
 				echo "Nix: Okay, You decided you want me set it up still, I'll continue install tailscale and set it up for you. :}"
 				echo "-----------------------------------------"
-				sleep 2.4
+				
 			elif [[ "$tailconfirm" = No ]]; then
 				echo "------------NneonNetwork-----------------"
 				echo "Nix: Okay, You decided you want to set it up manually instead, I'll continue install tailscale and you can do that. :}"
 				echo "-----------------------------------------"
 				sleep 2.4
 			fi
+		
 			clear
 			#----------------------------------------------------
 			curl -fsSL https://tailscale.com/install.sh | sudo sh
@@ -143,7 +146,7 @@ install_tailscale() {
 			sleep 2.0
 			clear
 			echo "------------NneonNetwork-----------------"
-			echo "Nix: Do note, manual will break SSHD service. delete or edit SSH override file to fix, the ExecStartPre line is the conflicting factor, sense it requires tailscale to be connected and running. Possibly docker override file as well needs editing..."
+			echo "Nix: Do note, manual will break SSHD service. delete or edit SSH override file to fix, the ExecStartPre line is the conflicting factor, sense it requires tailscale to be connected and running. Possibly docker override file as will be needing edited as well..."
 			echo "-----------------------------------------"
 			sleep 3.2
 			clear
