@@ -1,0 +1,63 @@
+services:
+  server:
+    image: codeberg.org/forgejo/forgejo:${forgejo_version}
+    container_name: forgejo
+    user: "${PUID}:${PGID}"
+    environment:
+      - USER_UID=${PUID}
+      - USER_GID=${PGID}
+      - FORGEJO__database__DB_TYPE=postgres
+      - FORGEJO__database__HOST=db
+      - FORGEJO__database__NAME=${DB_NAME}
+      - FORGEJO__database__USER=${DB_USER}
+      - FORGEJO__database__PASSWD=${DB_PASS}
+    restart: always
+    networks:
+      - forgejo_Internal
+    volumes:
+      - ./forgejo-data:/var/lib/gitea
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "${LISTEN_ADDRESS}:3000:3000"
+      - "${LISTEN_ADDRESS}:222:2222"
+    depends_on:
+      db:
+        condition: service_healthy
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    #cap_add:
+      #- SETUID
+      #- SETGID
+      #- CHOWN
+      #- DAC_OVERRIDE
+  db:
+    image: docker.io/library/postgres:17-alpine
+    restart: always
+    user: "${PUID}:${PGID}"
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    #cap_add:
+      #- SETUID
+      #- SETGID
+      #- CHOWN
+      #- DAC_OVERRIDE
+    networks:
+      - forgejo_Internal
+networks:
+  forgejo_Internal:
+    external: false
